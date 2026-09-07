@@ -1,0 +1,37 @@
+{
+  "extends": "@adonisjs/tsconfig/tsconfig.client.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "paths": {
+      "config/ssr": ["../../../config/ssr"],
+      "@generated/*": ["../../../.adonisjs/client/*"],
+      "~/*": ["./*"]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "../../auth/ui/**/*.ts",
+    "../../auth/ui/**/*.tsx",
+    "../../auth/types/**/*.ts",
+    "../../users/ui/**/*.ts",
+    "../../users/ui/**/*.tsx",
+    "../../users/types/**/*.ts",
+    "../../marketing/ui/**/*.ts",
+    "../../marketing/ui/**/*.tsx",
+    "../../common/ui/**/*.ts",
+    "../../common/ui/**/*.tsx",
+    "../../analytics/ui/**/*.ts",
+    "../../analytics/ui/**/*.tsx",
+    "../../home/ui/**/*.ts",
+    "../../home/ui/**/*.tsx",
+    "../../public/ui/**/*.ts",
+    "../../public/ui/**/*.tsx",
+    "../../internal/ui/**/*.ts",
+    "../../internal/ui/**/*.tsx",
+    "../../../config/auth.ts",
+    "../../../.adonisjs/client/**/*.ts",
+    "../../../.adonisjs/server/**/*.d.ts"
+  ]
+}

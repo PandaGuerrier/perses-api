@@ -1,0 +1,69 @@
+import '@adonisjs/core/types/http'
+
+type ParamValue = string | number | bigint | boolean
+
+export type ScannedRoutes = {
+  ALL: {
+    'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'auth.index': { paramsTuple?: []; params?: {} }
+    'public.index': { paramsTuple?: []; params?: {} }
+    'internal.index': { paramsTuple?: []; params?: {} }
+    'users.invite.show': { paramsTuple?: []; params?: {} }
+    'users.invite.handle': { paramsTuple?: []; params?: {} }
+    'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'users.index': { paramsTuple?: []; params?: {} }
+    'users.create': { paramsTuple?: []; params?: {} }
+    'users.store': { paramsTuple?: []; params?: {} }
+    'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'settings.index': { paramsTuple?: []; params?: {} }
+    'profile.update': { paramsTuple?: []; params?: {} }
+    'password.update': { paramsTuple?: []; params?: {} }
+    'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'tokens.store': { paramsTuple?: []; params?: {} }
+  }
+  GET: {
+    'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'auth.index': { paramsTuple?: []; params?: {} }
+    'public.index': { paramsTuple?: []; params?: {} }
+    'internal.index': { paramsTuple?: []; params?: {} }
+    'users.invite.show': { paramsTuple?: []; params?: {} }
+    'users.index': { paramsTuple?: []; params?: {} }
+    'users.create': { paramsTuple?: []; params?: {} }
+    'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'settings.index': { paramsTuple?: []; params?: {} }
+  }
+  HEAD: {
+    'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
+    'auth.index': { paramsTuple?: []; params?: {} }
+    'public.index': { paramsTuple?: []; params?: {} }
+    'internal.index': { paramsTuple?: []; params?: {} }
+    'users.invite.show': { paramsTuple?: []; params?: {} }
+    'users.index': { paramsTuple?: []; params?: {} }
+    'users.create': { paramsTuple?: []; params?: {} }
+    'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'settings.index': { paramsTuple?: []; params?: {} }
+  }
+  POST: {
+    'users.invite.handle': { paramsTuple?: []; params?: {} }
+    'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'users.store': { paramsTuple?: []; params?: {} }
+    'tokens.store': { paramsTuple?: []; params?: {} }
+  }
+  PUT: {
+    'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'profile.update': { paramsTuple?: []; params?: {} }
+    'password.update': { paramsTuple?: []; params?: {} }
+  }
+  PATCH: {
+    'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+  }
+  DELETE: {
+    'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+  }
+}
+declare module '@adonisjs/core/types/http' {
+  export interface RoutesList extends ScannedRoutes {}
+}
