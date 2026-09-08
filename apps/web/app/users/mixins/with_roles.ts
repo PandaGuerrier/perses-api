@@ -5,13 +5,13 @@ import type { NormalizeConstructor } from '@adonisjs/core/types/helpers'
 import Role from '#users/models/role'
 import type { Permission } from '#users/enums/permission'
 
-export function withRoles({ foreignKey = 'user_id' }: { foreignKey?: string } = {}) {
+export function withRoles({ foreignKey = 'user_uuid' }: { foreignKey?: string } = {}) {
   return <Model extends NormalizeConstructor<typeof BaseModel>>(superclass: Model) => {
     class WithRoles extends superclass {
       @manyToMany(() => Role, {
         pivotTable: 'user_roles',
         pivotForeignKey: foreignKey,
-        pivotRelatedForeignKey: 'role_id',
+        pivotRelatedForeignKey: 'role_uuid',
       })
       declare roles: ManyToMany<typeof Role>
 
@@ -52,33 +52,34 @@ export function withRoles({ foreignKey = 'user_id' }: { foreignKey?: string } = 
         return roles.some((role) => role.hasPermission(permission))
       }
 
-      async assignRole(role: Role | number): Promise<void> {
-        const id = typeof role === 'number' ? role : role.id
+      async assignRole(role: Role | string): Promise<void> {
+        const id = role instanceof Role ? role.uuid : role.toString()
         await this.rolesClient().sync([id], false)
         await this.reloadRoles()
       }
 
-      async assignRoles(roles: (Role | number)[]): Promise<void> {
-        const ids = roles.map((role) => (typeof role === 'number' ? role : role.id))
+      async assignRoles(roles: (Role | string)[]): Promise<void> {
+        const ids = roles.map((role) => (role instanceof Role ? role.uuid : role.toString()))
         await this.rolesClient().sync(ids, false)
         await this.reloadRoles()
       }
 
-      async syncRoles(roles: (Role | number)[]): Promise<void> {
-        const ids = roles.map((role) => (typeof role === 'number' ? role : role.id))
-        await this.rolesClient().sync(ids)
+      async syncRoles(roles: (Role | string)[]): Promise<void> {
+        await this.rolesClient().sync(
+          roles.map((role) => (role instanceof Role ? role.uuid : role.toString()))
+        )
         await this.reloadRoles()
       }
 
-      async revokeRole(role: Role | number): Promise<void> {
-        const id = typeof role === 'number' ? role : role.id
-        await this.rolesClient().detach([id])
+      async revokeRole(role: Role | string): Promise<void> {
+        await this.rolesClient().detach([role instanceof Role ? role.uuid : role.toString()])
         await this.reloadRoles()
       }
 
-      async revokeRoles(roles: (Role | number)[]): Promise<void> {
-        const ids = roles.map((role) => (typeof role === 'number' ? role : role.id))
-        await this.rolesClient().detach(ids)
+      async revokeRoles(roles: (Role | string)[]): Promise<void> {
+        await this.rolesClient().detach(
+          roles.map((role) => (role instanceof Role ? role.uuid : role.toString()))
+        )
         await this.reloadRoles()
       }
 
@@ -90,8 +91,8 @@ export function withRoles({ foreignKey = 'user_id' }: { foreignKey?: string } = 
         return (
           this as unknown as {
             related: (relation: 'roles') => {
-              sync: (ids: number[], detachOthers?: boolean) => Promise<void>
-              detach: (ids: number[]) => Promise<void>
+              sync: (ids: string[], detachOthers?: boolean) => Promise<void>
+              detach: (ids: string[]) => Promise<void>
             }
           }
         ).related('roles')

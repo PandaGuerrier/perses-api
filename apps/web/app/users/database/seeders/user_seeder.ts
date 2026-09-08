@@ -17,8 +17,8 @@ export default class UserSeeder extends BaseSeeder {
     await Role.updateOrCreate({ name: ROLES.USER }, { permissions: [] })
 
     const admin = await User.updateOrCreate(
-      { email: 'admin@repo.com' },
-      { fullName: 'Administrator', password: '123' }
+      { fullName: 'julio' },
+      { fullName: 'julio', publicKey: 'MgeopD5IZx6znXPiOzvuaw2j9NBJhGd+ijnu60pDcTM=', ferrisUuid: '1234567890' }
     )
 
     await admin.assignRole(adminRole)

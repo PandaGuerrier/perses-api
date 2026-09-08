@@ -1,14 +1,15 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'reset_password_tokens'
+  protected tableName = 'cheats'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
-      table.string('token', 255).notNullable()
-      table.timestamp('expires_at').notNullable()
+      table.uuid('id').primary()
+      table.uuid('user_uuid').references('users.uuid').onDelete('CASCADE')
+      table.string('domain')
+      table.timestamp('observed_at')
+
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

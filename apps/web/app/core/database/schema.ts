@@ -25,57 +25,28 @@ export class AuthAccessTokenSchema extends BaseModel {
   @column()
   declare name: string | null
   @column()
-  declare tokenableId: number
+  declare tokenableId: string
   @column()
   declare type: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
 
-export class NotificationPreferenceSchema extends BaseModel {
-  static $columns = ['channels', 'createdAt', 'id', 'notificationName', 'tenantId', 'updatedAt', 'userId'] as const
-  $columns = NotificationPreferenceSchema.$columns
-  @column()
-  declare channels: any
+export class CheatSchema extends BaseModel {
+  static $columns = ['createdAt', 'domain', 'id', 'observedAt', 'updatedAt', 'userUuid'] as const
+  $columns = CheatSchema.$columns
   @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+  declare createdAt: DateTime | null
+  @column()
+  declare domain: string | null
   @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare notificationName: string | null
-  @column()
-  declare tenantId: string | null
+  declare id: string
+  @column.dateTime()
+  declare observedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare userId: string
-}
-
-export class NotificationSchema extends BaseModel {
-  static $columns = ['content', 'createdAt', 'id', 'notifiableId', 'readAt', 'seenAt', 'status', 'tags', 'tenantId', 'type', 'updatedAt'] as const
-  $columns = NotificationSchema.$columns
-  @column()
-  declare content: any
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare notifiableId: string
-  @column.dateTime()
-  declare readAt: DateTime | null
-  @column.dateTime()
-  declare seenAt: DateTime | null
-  @column()
-  declare status: string
-  @column()
-  declare tags: any | null
-  @column()
-  declare tenantId: string | null
-  @column()
-  declare type: string
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+  declare userUuid: string | null
 }
 
 export class RateLimitSchema extends BaseModel {
@@ -89,70 +60,47 @@ export class RateLimitSchema extends BaseModel {
   declare points: number
 }
 
-export class ResetPasswordTokenSchema extends BaseModel {
-  static $columns = ['createdAt', 'expiresAt', 'id', 'token', 'updatedAt', 'userId'] as const
-  $columns = ResetPasswordTokenSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime | null
-  @column.dateTime()
-  declare expiresAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare token: string
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-  @column()
-  declare userId: number | null
-}
-
 export class RoleSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'name', 'permissions', 'updatedAt'] as const
+  static $columns = ['createdAt', 'name', 'permissions', 'updatedAt', 'uuid'] as const
   $columns = RoleSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
-  @column({ isPrimary: true })
-  declare id: number
   @column()
   declare name: string
   @column()
   declare permissions: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare uuid: string
 }
 
 export class UserRoleSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'roleId', 'userId'] as const
+  static $columns = ['createdAt', 'id', 'roleUuid', 'userUuid'] as const
   $columns = UserRoleSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare roleId: number
+  declare roleUuid: string
   @column()
-  declare userId: number
+  declare userUuid: string
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['avatar', 'avatarUrl', 'createdAt', 'email', 'fullName', 'id', 'locale', 'password', 'updatedAt'] as const
+  static $columns = ['createdAt', 'ferrisUuid', 'fullName', 'publicKey', 'updatedAt', 'uuid'] as const
   $columns = UserSchema.$columns
-  @column()
-  declare avatar: any | null
-  @column()
-  declare avatarUrl: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
-  declare email: string
+  declare ferrisUuid: string | null
   @column()
   declare fullName: string | null
-  @column({ isPrimary: true })
-  declare id: number
   @column()
-  declare locale: string | null
-  @column({ serializeAs: null })
-  declare password: string | null
+  declare publicKey: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare uuid: string
 }

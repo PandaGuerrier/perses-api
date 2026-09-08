@@ -1,15 +1,16 @@
 import { DateTime } from 'luxon'
-import { column, manyToMany } from '@adonisjs/lucid/orm'
+import { beforeCreate, column, manyToMany } from '@adonisjs/lucid/orm'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 
 import BaseModel from '#common/models/base_model'
 import User from '#users/models/user'
 
 import { isPermission, type Permission } from '#users/enums/permission'
+import { randomUUID } from 'node:crypto'
 
 export default class Role extends BaseModel {
   @column({ isPrimary: true })
-  declare id: number
+  declare uuid: string
 
   @column()
   declare name: string
@@ -37,8 +38,8 @@ export default class Role extends BaseModel {
 
   @manyToMany(() => User, {
     pivotTable: 'user_roles',
-    pivotForeignKey: 'role_id',
-    pivotRelatedForeignKey: 'user_id',
+    pivotForeignKey: 'role_uuid',
+    pivotRelatedForeignKey: 'user_uuid',
   })
   declare users: ManyToMany<typeof User>
 
@@ -61,5 +62,10 @@ export default class Role extends BaseModel {
     const toRemove = new Set<string>(permissions)
     this.permissions = this.permissions.filter((permission) => !toRemove.has(permission))
     await this.save()
+  }
+
+  @beforeCreate()
+  static generate(model: Role) {
+    model.uuid = randomUUID()
   }
 }
