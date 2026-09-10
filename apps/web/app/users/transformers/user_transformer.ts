@@ -5,7 +5,7 @@ import type User from '#users/models/user'
 export default class UserTransformer extends BaseTransformer<User> {
   toObject() {
     return {
-      id: this.resource.id,
+      id: this.resource.uuid,
       fullName: this.resource.fullName,
       email: this.resource.email,
     }

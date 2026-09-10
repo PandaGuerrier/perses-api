@@ -60,6 +60,10 @@ export default await Env.create(new URL('../', import.meta.url), {
   */
   GOOGLE_CLIENT_ID: Env.schema.string(),
   GOOGLE_CLIENT_SECRET: Env.schema.string(),
+  FERRISKEY_ISSUER: Env.schema.string(),
+  FERRISKEY_CLIENT_ID: Env.schema.string(),
+  FERRISKEY_CLIENT_SECRET: Env.schema.string(),
+  FERRISKEY_CALLBACK_URL: Env.schema.string(),
 
   /*
   |----------------------------------------------------------

@@ -6,8 +6,9 @@ export type ScannedRoutes = {
   ALL: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'auth.index': { paramsTuple?: []; params?: {} }
+    'auth.ferriskey.redirect': { paramsTuple?: []; params?: {} }
+    'auth.ferriskey.callback': { paramsTuple?: []; params?: {} }
     'public.index': { paramsTuple?: []; params?: {} }
-    'internal.index': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -22,34 +23,46 @@ export type ScannedRoutes = {
     'password.update': { paramsTuple?: []; params?: {} }
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.store': { paramsTuple?: []; params?: {} }
+    'internal.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
+    'subscribe': { paramsTuple?: []; params?: {} }
+    'unsubscribe': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'auth.index': { paramsTuple?: []; params?: {} }
+    'auth.ferriskey.redirect': { paramsTuple?: []; params?: {} }
+    'auth.ferriskey.callback': { paramsTuple?: []; params?: {} }
     'public.index': { paramsTuple?: []; params?: {} }
-    'internal.index': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
+    'internal.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'auth.index': { paramsTuple?: []; params?: {} }
+    'auth.ferriskey.redirect': { paramsTuple?: []; params?: {} }
+    'auth.ferriskey.callback': { paramsTuple?: []; params?: {} }
     'public.index': { paramsTuple?: []; params?: {} }
-    'internal.index': { paramsTuple?: []; params?: {} }
     'users.invite.show': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'settings.index': { paramsTuple?: []; params?: {} }
+    'internal.index': { paramsTuple?: []; params?: {} }
+    'event_stream': { paramsTuple?: []; params?: {} }
   }
   POST: {
     'users.invite.handle': { paramsTuple?: []; params?: {} }
     'users.impersonate.handle': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'users.store': { paramsTuple?: []; params?: {} }
     'tokens.store': { paramsTuple?: []; params?: {} }
+    'subscribe': { paramsTuple?: []; params?: {} }
+    'unsubscribe': { paramsTuple?: []; params?: {} }
   }
   PUT: {
     'users.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

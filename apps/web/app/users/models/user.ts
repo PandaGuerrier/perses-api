@@ -29,6 +29,9 @@ export default class User extends compose(BaseModel, AuthFinder, withRoles()) {
   @column()
   declare publicKey: string
 
+  @column()
+  declare email: string
+
   @hasMany(() => Cheat)
   declare cheats: HasMany<typeof Cheat>
 

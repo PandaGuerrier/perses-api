@@ -1,11 +1,14 @@
 import env from '#start/env'
-import { defineConfig, services } from '@adonisjs/ally'
+import { defineConfig } from '@adonisjs/ally'
+import type { InferSocialProviders } from '@adonisjs/ally/types'
+import { OidcService } from '@workspace/oidc-ally'
 
 const allyConfig = defineConfig({
-  google: services.google({
-    clientId: env.get('GOOGLE_CLIENT_ID'),
-    clientSecret: env.get('GOOGLE_CLIENT_SECRET'),
-    callbackUrl: env.get('VITE_API_URL') + '/google/callback',
+  ferriskey: OidcService({
+    issuer: env.get('FERRISKEY_ISSUER'),
+    clientId: env.get('FERRISKEY_CLIENT_ID'),
+    clientSecret: env.get('FERRISKEY_CLIENT_SECRET'),
+    callbackUrl: env.get('FERRISKEY_CALLBACK_URL'),
   }),
 })
 

@@ -89,10 +89,12 @@ export class UserRoleSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'ferrisUuid', 'fullName', 'publicKey', 'updatedAt', 'uuid'] as const
+  static $columns = ['createdAt', 'email', 'ferrisUuid', 'fullName', 'publicKey', 'updatedAt', 'uuid'] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare email: string | null
   @column()
   declare ferrisUuid: string | null
   @column()

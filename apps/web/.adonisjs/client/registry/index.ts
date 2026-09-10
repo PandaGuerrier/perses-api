@@ -18,17 +18,23 @@ const routes = {
     tokens: [{"old":"/auth","type":0,"val":"auth","end":""}],
     types: placeholder as Registry['auth.index']['types'],
   },
+  'auth.ferriskey.redirect': {
+    methods: ["GET","HEAD"],
+    pattern: '/auth/ferriskey/redirect',
+    tokens: [{"old":"/auth/ferriskey/redirect","type":0,"val":"auth","end":""},{"old":"/auth/ferriskey/redirect","type":0,"val":"ferriskey","end":""},{"old":"/auth/ferriskey/redirect","type":0,"val":"redirect","end":""}],
+    types: placeholder as Registry['auth.ferriskey.redirect']['types'],
+  },
+  'auth.ferriskey.callback': {
+    methods: ["GET","HEAD"],
+    pattern: '/auth/ferriskey/callback',
+    tokens: [{"old":"/auth/ferriskey/callback","type":0,"val":"auth","end":""},{"old":"/auth/ferriskey/callback","type":0,"val":"ferriskey","end":""},{"old":"/auth/ferriskey/callback","type":0,"val":"callback","end":""}],
+    types: placeholder as Registry['auth.ferriskey.callback']['types'],
+  },
   'public.index': {
     methods: ["GET","HEAD"],
     pattern: '/',
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['public.index']['types'],
-  },
-  'internal.index': {
-    methods: ["GET","HEAD"],
-    pattern: '/internal',
-    tokens: [{"old":"/internal","type":0,"val":"internal","end":""}],
-    types: placeholder as Registry['internal.index']['types'],
   },
   'users.invite.show': {
     methods: ["GET","HEAD"],
@@ -113,6 +119,30 @@ const routes = {
     pattern: '/settings/tokens',
     tokens: [{"old":"/settings/tokens","type":0,"val":"settings","end":""},{"old":"/settings/tokens","type":0,"val":"tokens","end":""}],
     types: placeholder as Registry['tokens.store']['types'],
+  },
+  'internal.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/internal',
+    tokens: [{"old":"/internal","type":0,"val":"internal","end":""}],
+    types: placeholder as Registry['internal.index']['types'],
+  },
+  'event_stream': {
+    methods: ["GET","HEAD"],
+    pattern: '/__transmit/events',
+    tokens: [{"old":"/__transmit/events","type":0,"val":"__transmit","end":""},{"old":"/__transmit/events","type":0,"val":"events","end":""}],
+    types: placeholder as Registry['event_stream']['types'],
+  },
+  'subscribe': {
+    methods: ["POST"],
+    pattern: '/__transmit/subscribe',
+    tokens: [{"old":"/__transmit/subscribe","type":0,"val":"__transmit","end":""},{"old":"/__transmit/subscribe","type":0,"val":"subscribe","end":""}],
+    types: placeholder as Registry['subscribe']['types'],
+  },
+  'unsubscribe': {
+    methods: ["POST"],
+    pattern: '/__transmit/unsubscribe',
+    tokens: [{"old":"/__transmit/unsubscribe","type":0,"val":"__transmit","end":""},{"old":"/__transmit/unsubscribe","type":0,"val":"unsubscribe","end":""}],
+    types: placeholder as Registry['unsubscribe']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

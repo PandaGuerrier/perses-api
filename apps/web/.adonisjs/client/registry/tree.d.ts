@@ -9,12 +9,13 @@ export interface ApiDefinition {
   }
   auth: {
     index: typeof routes['auth.index']
+    ferriskey: {
+      redirect: typeof routes['auth.ferriskey.redirect']
+      callback: typeof routes['auth.ferriskey.callback']
+    }
   }
   public: {
     index: typeof routes['public.index']
-  }
-  internal: {
-    index: typeof routes['internal.index']
   }
   users: {
     invite: {
@@ -44,4 +45,10 @@ export interface ApiDefinition {
     destroy: typeof routes['tokens.destroy']
     store: typeof routes['tokens.store']
   }
+  internal: {
+    index: typeof routes['internal.index']
+  }
+  eventStream: typeof routes['event_stream']
+  subscribe: typeof routes['subscribe']
+  unsubscribe: typeof routes['unsubscribe']
 }
