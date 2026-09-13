@@ -24,7 +24,7 @@ export const editUserValidator = vine.withMetaData<{ userId: string }>().create(
         .where('email', value)
         .whereNot('uuid', field.meta.userId)
         .first()
-      return row ? false : true
+      return !row
     }),
   roles: vine.array(vine.string().uuid()).minLength(1),
   schoolId: vine.string().uuid().nullable().optional(),
