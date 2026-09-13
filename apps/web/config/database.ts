@@ -17,7 +17,18 @@ const dbConfig = defineConfig({
       },
       migrations: {
         naturalSort: true,
-        paths: ['app/users/database/migrations', 'app/notifications/database/migrations'],
+        /**
+         * Migrations run directory by directory, in this order — never
+         * interleaved by timestamp. `schools` therefore has to be created
+         * before `users`, which carries a school_uuid, while the rest of the
+         * schools module points back at users and has to come after it.
+         */
+        paths: [
+          'app/schools/database/migrations_bootstrap',
+          'app/users/database/migrations',
+          'app/schools/database/migrations',
+          'app/exam/database/migrations',
+        ],
       },
       seeders: {
         paths: ['app/users/database/seeders'],

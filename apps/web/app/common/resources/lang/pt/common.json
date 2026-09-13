@@ -1,9 +1,15 @@
 {
   "layout": {
     "navMain": {
-      "dashboard": "Dashboard",
+      "dashboard": "Painel",
+      "schedule": "A minha agenda",
+      "organisation": "Organização",
+      "schools": "Escolas",
+      "groups": "Turmas",
+      "exams": "Exames",
       "administration": "Administração",
-      "users": "Usuários"
+      "users": "Utilizadores",
+      "roles": "Funções e permissões"
     },
     "navUser": {
       "settings": "Configurações",

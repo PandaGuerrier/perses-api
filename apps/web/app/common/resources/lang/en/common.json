@@ -2,8 +2,14 @@
   "layout": {
     "navMain": {
       "dashboard": "Dashboard",
+      "schedule": "My schedule",
+      "organisation": "Organisation",
+      "schools": "Schools",
+      "groups": "Groups",
+      "exams": "Exams",
       "administration": "Administration",
-      "users": "Users"
+      "users": "Users",
+      "roles": "Roles & permissions"
     },
     "navUser": {
       "settings": "Settings",

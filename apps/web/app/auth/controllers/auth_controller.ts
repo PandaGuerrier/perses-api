@@ -1,6 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import * as console from 'node:console'
-import User from '#users/models/user'
+
+import { afterAuthLogoutRedirectRoute, afterAuthRedirectRoute } from '#config/auth'
+
+import ResolveOidcUser from '#auth/actions/resolve_oidc_user'
 
 export default class AuthController {
   async index({ inertia }: HttpContext) {
@@ -11,7 +13,7 @@ export default class AuthController {
     return ally.use('ferriskey').redirect()
   }
 
-  async callback({ ally, response, auth }: HttpContext) {
+  async callback({ ally, auth, response }: HttpContext) {
     const ferriskey = ally.use('ferriskey')
 
     if (ferriskey.accessDenied() || ferriskey.stateMisMatch() || ferriskey.hasError()) {
@@ -20,16 +22,20 @@ export default class AuthController {
 
     const oidcUser = await ferriskey.user()
 
-    console.log(oidcUser.id)
-
-    const user = await User.firstOrCreate({ ferrisUuid: oidcUser.id }, {
+    const user = await new ResolveOidcUser().handle({
       ferrisUuid: oidcUser.id,
       fullName: oidcUser.name,
-      email: oidcUser.email
+      email: oidcUser.email,
     })
 
     await auth.use('web').login(user)
 
-    return oidcUser
+    return response.redirect().toRoute(afterAuthRedirectRoute)
+  }
+
+  async logout({ auth, response }: HttpContext) {
+    await auth.use('web').logout()
+
+    return response.redirect().toRoute(afterAuthLogoutRedirectRoute)
   }
 }

@@ -1,12 +1,11 @@
 import { cn } from '@workspace/ui/lib/utils'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@workspace/ui/components/avatar'
+import { Avatar, AvatarFallback } from '@workspace/ui/components/avatar'
 
 export interface NavUserProps {
   user: {
     fullName: string | null | undefined
     email: string
-    avatarUrl: string | null | undefined
   }
   className?: string
   shape?: 'circle' | 'square'
@@ -30,7 +29,6 @@ export function UserAvatar({ user, className, shape = 'circle' }: NavUserProps) 
 
   return (
     <Avatar className={cn('h-8 w-8', className)} shape={shape}>
-      <AvatarImage src={user.avatarUrl ?? undefined} alt={user.fullName ?? undefined} />
       <AvatarFallback>{fallbackText}</AvatarFallback>
     </Avatar>
   )

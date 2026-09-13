@@ -1,0 +1,40 @@
+{
+  "index": {
+    "page": {
+      "title": "Examens",
+      "description": "Les examens planifiés de votre établissement.",
+      "breadcrumbs": {
+        "exams": "Examens"
+      }
+    },
+    "table": {
+      "title": "Intitulé",
+      "starts_at": "Début",
+      "ends_at": "Fin",
+      "students": "Élèves"
+    }
+  },
+  "schedule": {
+    "page": {
+      "title": "Mon emploi du temps",
+      "description": "Vos prochains examens.",
+      "breadcrumbs": {
+        "schedule": "Emploi du temps"
+      }
+    },
+    "empty": "Aucun examen planifié."
+  },
+  "action": {
+    "create": "Nouvel examen",
+    "edit": "Modifier l'examen",
+    "delete": "Supprimer l'examen",
+    "title": "Intitulé",
+    "description": "Description",
+    "starts_at": "Début",
+    "ends_at": "Fin",
+    "students": "Élèves",
+    "fill_from_group": "Pré-remplir depuis un groupe",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  }
+}

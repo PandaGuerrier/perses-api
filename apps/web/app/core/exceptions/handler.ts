@@ -47,7 +47,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
         return ctx.response.status(401).send({ message })
       }
       ctx.session?.flash('error', message)
-      return ctx.response.redirect().toRoute('auth.sign_in.show')
+      return ctx.response.redirect().toRoute('auth.index')
     }
 
     return super.handle(error, ctx)

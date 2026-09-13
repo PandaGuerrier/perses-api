@@ -1,0 +1,40 @@
+{
+  "index": {
+    "page": {
+      "title": "Exames",
+      "description": "Exames agendados da sua escola.",
+      "breadcrumbs": {
+        "exams": "Exames"
+      }
+    },
+    "table": {
+      "title": "Título",
+      "starts_at": "Início",
+      "ends_at": "Fim",
+      "students": "Alunos"
+    }
+  },
+  "schedule": {
+    "page": {
+      "title": "A minha agenda",
+      "description": "Os seus próximos exames.",
+      "breadcrumbs": {
+        "schedule": "Agenda"
+      }
+    },
+    "empty": "Sem exames agendados."
+  },
+  "action": {
+    "create": "Novo exame",
+    "edit": "Editar exame",
+    "delete": "Eliminar exame",
+    "title": "Título",
+    "description": "Descrição",
+    "starts_at": "Início",
+    "ends_at": "Fim",
+    "students": "Alunos",
+    "fill_from_group": "Preencher a partir de uma turma",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  }
+}

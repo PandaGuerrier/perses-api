@@ -1,6 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-import User from '#users/models/user'
+import type User from '#users/models/user'
 import TokenPolicy from '#users/policies/token_policy'
 import ListUserTokens from '#users/queries/list_user_tokens'
 import TokenTransformer from '#users/transformers/token_transformer'
@@ -13,17 +13,18 @@ interface NewToken {
 
 export default class SettingsController {
   async show({ auth, bouncer, inertia, session }: HttpContext) {
-    await User.preComputeUrls(auth.user!)
+    const user = auth.getUserOrFail() as User
+    await user.load('roles')
 
     const canManageTokens = await bouncer.with(TokenPolicy).allows('viewList')
     const tokens = canManageTokens
-      ? TokenTransformer.transform(await new ListUserTokens().handle({ owner: auth.user! }))
+      ? TokenTransformer.transform(await new ListUserTokens().handle({ owner: user }))
       : []
 
     const newToken = (session.flashMessages.get('newToken') as NewToken | undefined) ?? null
 
     return inertia.render('users/settings', {
-      profile: UserTransformer.transform(auth.user!).useVariant('forProfile'),
+      profile: UserTransformer.transform(user).useVariant('forProfile'),
       tokens,
       newToken,
     })

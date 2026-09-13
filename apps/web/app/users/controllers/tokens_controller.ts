@@ -10,7 +10,7 @@ export default class TokensController {
   async store({ auth, bouncer, request, response, session }: HttpContext) {
     await bouncer.with(TokenPolicy).authorize('create')
 
-    const owner = await User.findOrFail(auth.user!.id)
+    const owner = await User.findOrFail(auth.getUserOrFail().uuid)
     const payload = await request.validateUsing(createTokenValidator)
 
     const created = await new CreateToken().handle({ owner, name: payload.name })
@@ -26,7 +26,7 @@ export default class TokensController {
   async destroy({ auth, bouncer, params, response }: HttpContext) {
     await bouncer.with(TokenPolicy).authorize('delete')
 
-    const owner = await User.findOrFail(auth.user!.id)
+    const owner = await User.findOrFail(auth.getUserOrFail().uuid)
     await new DeleteToken().handle({ owner, tokenId: params.id })
 
     return response.redirect().toRoute('settings.index')

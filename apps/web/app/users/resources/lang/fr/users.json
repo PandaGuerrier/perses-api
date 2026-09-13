@@ -7,17 +7,10 @@
     "tokens": "Jetons",
     "appearance": "Apparence"
   },
-  "appearance": {
-    "breadcrumbs": {
-      "settings": "Paramètres"
-    },
-    "title": "Apparence",
-    "description": "Personnalisez l'apparence de l'application. Basculez automatiquement entre les thèmes clair et sombre."
-  },
   "index": {
     "page": {
       "title": "Utilisateurs",
-      "description": "Gérez les utilisateurs de votre application",
+      "description": "Toutes les personnes ayant accès.",
       "breadcrumbs": {
         "users": "Utilisateurs"
       }
@@ -36,7 +29,6 @@
         "no_results": "Aucun résultat trouvé."
       },
       "row_actions": {
-        "impersonate": "Imiter",
         "edit": "Modifier",
         "delete": "Supprimer",
         "open_menu": "Ouvrir menu",
@@ -45,23 +37,8 @@
       "not_provided": "Non fourni"
     },
     "toolbar": {
-      "invite": "Inviter",
       "add": "Ajouter"
     }
-  },
-  "password": {
-    "breadcrumbs": {
-      "settings": "Paramètres"
-    },
-    "title": "Mettre à jour le mot de passe",
-    "description": "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé"
-  },
-  "profile": {
-    "breadcrumbs": {
-      "settings": "Paramètres"
-    },
-    "title": "Informations sur le profil",
-    "description": "Mettez à jour votre nom et votre adresse e-mail"
   },
   "tokens": {
     "breadcrumbs": {
@@ -159,60 +136,34 @@
       "title": "Le jeton suivant a été supprimé :"
     }
   },
-  "impersonate": {
-    "title": "Imiter l'utilisateur",
-    "description": "Êtes-vous sûr de vouloir vous faire passer pour <strong1>{{email}}</strong1> ? Cette action vous permettra d'agir comme cet utilisateur (Rôle : <strong2>{{role}}</strong2>) dans le système.",
-    "confirm_button": "Imiter",
-    "alert": {
-      "title": "Note",
-      "description": "Vous pouvez revenir à votre compte d'origine à tout moment en vous déconnectant."
-    },
-    "toast": {
-      "title": "Vous vous faites désormais passer pour l'utilisateur suivant :"
-    }
+  "roles": {
+    "super_admin": "Super admin",
+    "admin": "Admin",
+    "teacher": "Professeur",
+    "student": "Élève"
   },
-  "invite": {
-    "title": "Inviter un utilisateur",
-    "description": "Invitez de nouveaux utilisateurs à rejoindre votre équipe en leur envoyant une invitation par e-mail. Attribuez-leur un rôle pour définir leur niveau d'accès.",
-    "form": {
-      "email": {
-        "label": "Email",
-        "placeholder": "Entrez l'e-mail de l'utilisateur"
-      },
-      "role": {
-        "label": "Rôle",
-        "placeholder": "Sélectionnez un rôle"
-      },
-      "description": {
-        "label": "Description (optionnel)",
-        "placeholder": "Ajoutez une note personnelle à votre invitation (facultatif)"
+  "roles_screen": {
+    "page": {
+      "title": "Rôles et permissions",
+      "description": "Les rôles système sont en lecture seule. Créez un rôle pour accorder des permissions supplémentaires.",
+      "breadcrumbs": {
+        "roles": "Rôles"
       }
     },
-    "actions": {
+    "table": {
+      "name": "Nom",
+      "scope": "Portée",
+      "permissions": "Permissions",
+      "system": "Système",
+      "custom": "Personnalisé"
+    },
+    "action": {
+      "create": "Nouveau rôle",
+      "edit": "Modifier le rôle",
+      "delete": "Supprimer le rôle",
+      "save": "Enregistrer",
       "cancel": "Annuler",
-      "submit": "Envoyer l'invitation"
-    },
-    "toast": {
-      "title": "Vous avez soumis les valeurs suivantes :"
-    }
-  },
-  "emails": {
-    "welcome": {
-      "subject": "Bienvenue!",
-      "title": "Bienvenue {full_name}!",
-      "subtitle": "Nous sommes ravis de vous compter parmi nous.",
-      "action_btn": "Commencer",
-      "default_message": "Merci de rejoindre notre communauté. Découvrez nos fonctionnalités et commencez votre aventure avec nous. Pour toute question, n'hésitez pas à nous contacter !"
-    }
-  },
-  "roles": {
-    "user": {
-      "name": "Utilisateur",
-      "description": "Utilisateur Authentifié"
-    },
-    "admin": {
-      "name": "Administrateur",
-      "description": "Super Utilisateur"
+      "permissions_hint": "Vous ne pouvez accorder que les permissions que vous détenez."
     }
   }
 }

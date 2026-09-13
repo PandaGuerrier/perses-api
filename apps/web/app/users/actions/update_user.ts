@@ -1,13 +1,12 @@
 import SyncUserRoles from '#users/actions/sync_user_roles'
-import type { Role as RoleSlug } from '#users/enums/role'
 import type User from '#users/models/user'
 
 export interface UpdateUserInput {
   target: User
   fullName: string
   email: string
-  role: RoleSlug
-  password?: string
+  roleUuids: string[]
+  schoolUuid: string | null
   executor: User
 }
 
@@ -16,13 +15,13 @@ export default class UpdateUser {
     input.target.merge({
       fullName: input.fullName,
       email: input.email,
-      password: input.password ?? input.target.password,
+      schoolUuid: input.schoolUuid,
     })
     await input.target.save()
 
     await new SyncUserRoles().handle({
       target: input.target,
-      desiredRoles: [input.role],
+      desiredRoleUuids: input.roleUuids,
       executor: input.executor,
     })
 

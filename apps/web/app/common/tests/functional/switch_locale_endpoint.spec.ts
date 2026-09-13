@@ -47,8 +47,8 @@ test.group('Endpoint POST /switch/:locale', (group) => {
     assert.equal(response.header('location'), '/')
   })
 
-  test('user autenticado tem locale salvo no proprio user', async ({ client, assert }) => {
-    const user = await UserFactory.merge({ locale: null }).create()
+  test('an authenticated user gets the same cookie', async ({ client }) => {
+    const user = await UserFactory.create()
 
     const response = await client
       .post('/switch/fr')
@@ -59,9 +59,6 @@ test.group('Endpoint POST /switch/:locale', (group) => {
 
     response.assertStatus(302)
     response.assertCookie('user-locale', 'fr')
-
-    await user.refresh()
-    assert.equal(user.locale, 'fr')
   })
 
   test('user anonimo nao tenta persistir em user (so seta cookie)', async ({ client }) => {

@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Dashboard",
+    "description": "What you can reach right now.",
+    "breadcrumbs": {
+      "dashboard": "Dashboard"
+    }
+  },
+  "platform": {
+    "title": "Platform",
+    "schools": "Schools",
+    "users": "Users",
+    "pending_invitations": "Pending invitations",
+    "latest": "Latest schools"
+  },
+  "school": {
+    "title": "My school",
+    "students": "Students",
+    "teachers": "Teachers",
+    "groups": "Groups",
+    "upcoming_exams": "Upcoming exams",
+    "pending_invitations": "Pending invitations"
+  },
+  "teaching": {
+    "title": "My teaching",
+    "groups": "My groups",
+    "upcoming_exams": "Upcoming exams",
+    "empty_groups": "No group yet.",
+    "empty_exams": "No exam scheduled."
+  },
+  "schedule": {
+    "title": "My schedule",
+    "empty": "No exam scheduled.",
+    "see_all": "See the full schedule"
+  },
+  "empty": {
+    "title": "Nothing to show yet",
+    "description": "Your account is not attached to a school. An administrator has to invite you."
+  }
+}

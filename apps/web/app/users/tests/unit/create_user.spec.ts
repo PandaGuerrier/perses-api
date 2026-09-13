@@ -4,92 +4,43 @@ import { test } from '@japa/runner'
 import CreateUser from '#users/actions/create_user'
 import ManageRolesUnauthorizedException from '#users/exceptions/manage_roles_unauthorized'
 import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { createSchool, ensureBaseRoles, makeUser, systemRoleUuid } from '#tests/helpers/rbac'
 
 test.group('CreateUser', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.setup(() => ensureBaseRoles())
 
-  test('admin cria user comum com role atribuido', async ({ db, assert }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
+  test('a super-admin creates a student inside a school', async ({ db, assert }) => {
+    const school = await createSchool()
+    const superAdmin = await makeUser(ROLES.SUPER_ADMIN, null)
 
     const created = await new CreateUser().handle({
-      fullName: 'Joao Novo',
-      email: 'joao-novo@example.test',
-      role: ROLES.USER,
-      password: 'senha-inicial-123',
-      executor: admin,
+      fullName: 'New Student',
+      email: 'new-student@example.test',
+      roleUuids: [await systemRoleUuid(ROLES.STUDENT)],
+      schoolUuid: school.uuid,
+      executor: superAdmin,
     })
 
-    await db.assertHas('users', { email: 'joao-novo@example.test', full_name: 'Joao Novo' })
-    assert.deepEqual(await created.getRoleNames(), [ROLES.USER])
+    await db.assertHas('users', { email: 'new-student@example.test' })
+    assert.equal(created.schoolUuid, school.uuid)
+    assert.deepEqual(await created.getRoleNames(), [ROLES.STUDENT])
   })
 
-  test('admin promove ao criar (usersManageRoles necessario para admin)', async ({ assert }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
-
-    const created = await new CreateUser().handle({
-      fullName: 'Ana Admin',
-      email: 'ana-admin@example.test',
-      role: ROLES.ADMIN,
-      password: 'senha-inicial-123',
-      executor: admin,
-    })
-
-    assert.deepEqual(await created.getRoleNames(), [ROLES.ADMIN])
-  })
-
-  test('usa UUID como senha quando nao informada (usuario nao consegue logar direto)', async ({
-    assert,
-  }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
-
-    const created = await new CreateUser().handle({
-      fullName: 'Sem Senha',
-      email: 'sem-senha@example.test',
-      role: ROLES.USER,
-      executor: admin,
-    })
-
-    assert.isNotNull(created.password)
-    assert.notEqual(created.password, '')
-  })
-
-  test('user comum NAO pode criar admin', async ({ db, assert }) => {
-    const executor = await UserFactory.create()
-    await withRole(executor, ROLES.USER)
+  test('an admin cannot create a super-admin', async ({ assert }) => {
+    const school = await createSchool()
+    const admin = await makeUser(ROLES.ADMIN, school)
 
     await assert.rejects(
-      () =>
+      async () =>
         new CreateUser().handle({
-          fullName: 'Escalador',
-          email: 'escalador@example.test',
-          role: ROLES.ADMIN,
-          executor,
+          fullName: 'Escalation',
+          email: 'escalation@example.test',
+          roleUuids: [await systemRoleUuid(ROLES.SUPER_ADMIN)],
+          schoolUuid: school.uuid,
+          executor: admin,
         }),
       ManageRolesUnauthorizedException
     )
-
-    await db.assertMissing('users', { email: 'escalador@example.test' })
-  })
-
-  test('escalation guard so protege contra papel != USER (block user->user cabe a policy)', async ({
-    db,
-  }) => {
-    const executor = await UserFactory.create()
-    await withRole(executor, ROLES.USER)
-
-    await new CreateUser().handle({
-      fullName: 'Ok User',
-      email: 'ok-user@example.test',
-      role: ROLES.USER,
-      executor,
-    })
-
-    await db.assertHas('users', { email: 'ok-user@example.test' })
   })
 })

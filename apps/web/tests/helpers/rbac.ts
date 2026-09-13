@@ -1,56 +1,112 @@
+import School from '#schools/models/school'
 import { UserFactory } from '#users/database/factories/user'
-import { ALL_PERMISSIONS, type Permission } from '#users/enums/permission'
+import { ALL_PERMISSIONS, PERMISSIONS, type Permission } from '#users/enums/permission'
 import { ROLES, type Role as RoleSlug } from '#users/enums/role'
 import Role from '#users/models/role'
-import User from '#users/models/user'
+import type User from '#users/models/user'
+
+const P = PERMISSIONS
+
+/** Mirrors app/users/database/seeders/user_seeder.ts. */
+export const SYSTEM_ROLE_PERMISSIONS: Record<RoleSlug, Permission[]> = {
+  [ROLES.SUPER_ADMIN]: ALL_PERMISSIONS,
+  [ROLES.ADMIN]: [
+    P.schoolsViewList,
+    P.schoolsUpdate,
+    P.schoolMembersViewList,
+    P.schoolMembersInvite,
+    P.schoolMembersRemove,
+    P.schoolMembersManageRoles,
+    P.usersViewList,
+    P.usersUpdate,
+    P.groupsViewList,
+    P.groupsCreate,
+    P.groupsUpdate,
+    P.groupsDelete,
+    P.groupsManageMembers,
+    P.examsViewList,
+    P.examsCreate,
+    P.examsUpdate,
+    P.examsDelete,
+    P.rolesViewList,
+    P.rolesCreate,
+    P.rolesUpdate,
+    P.rolesDelete,
+    P.tokensViewList,
+    P.tokensCreate,
+    P.tokensDelete,
+  ],
+  [ROLES.TEACHER]: [
+    P.groupsViewList,
+    P.groupsCreate,
+    P.groupsUpdate,
+    P.groupsDelete,
+    P.groupsManageMembers,
+    P.schoolMembersViewList,
+    P.examsViewList,
+  ],
+  [ROLES.STUDENT]: [P.examsViewSchedule],
+}
 
 // Call after `wrapInGlobalTransaction` — otherwise the seeded rows leak.
 export async function ensureBaseRoles(): Promise<void> {
-  const admin = await Role.updateOrCreate({ name: ROLES.ADMIN }, { permissions: ALL_PERMISSIONS })
-  await admin.syncPermissions(ALL_PERMISSIONS)
-  await Role.updateOrCreate({ name: ROLES.USER }, { permissions: [] })
+  for (const [name, permissions] of Object.entries(SYSTEM_ROLE_PERMISSIONS)) {
+    const role = await Role.updateOrCreate(
+      { name, schoolUuid: null },
+      { name, schoolUuid: null, isSystem: true, permissions }
+    )
+    await role.syncPermissions(permissions)
+  }
+}
+
+export async function systemRole(name: RoleSlug): Promise<Role> {
+  return Role.query().where('name', name).whereNull('school_uuid').firstOrFail()
+}
+
+export async function systemRoleUuid(name: RoleSlug): Promise<string> {
+  const role = await systemRole(name)
+  return role.uuid
 }
 
 export async function withRole(user: User, roleName: RoleSlug): Promise<Role> {
-  const role = await Role.firstOrCreate({ name: roleName }, { permissions: [] })
+  const role = await systemRole(roleName)
   await user.assignRole(role)
   return role
 }
 
-export async function withPermissions(
+/** A school-scoped custom role, the way an admin would author one. */
+export async function withCustomRole(
   user: User,
-  roleName: string,
-  permissions: Permission[]
+  name: string,
+  permissions: Permission[],
+  schoolUuid: string | null = user.schoolUuid
 ): Promise<Role> {
-  const role = await Role.firstOrCreate({ name: roleName }, { permissions })
+  const role = await Role.updateOrCreate(
+    { name, schoolUuid },
+    { name, schoolUuid, isSystem: false, permissions }
+  )
   await role.syncPermissions(permissions)
   await user.assignRole(role)
   return role
 }
 
-// Idempotent: reuses the row if a prior run left it behind, overwrites password + role.
-export async function ensureUser(input: {
-  email: string
-  password: string
-  fullName?: string
-  role?: RoleSlug
-}): Promise<User> {
-  const existing = await User.query().where('email', input.email).first()
+export async function createSchool(name = 'Test school'): Promise<School> {
+  const slug = `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Math.random().toString(36).slice(2, 8)}`
+  return School.create({ name, slug, description: null })
+}
 
-  const user = existing
-    ? await existing
-        .merge({
-          password: input.password,
-          fullName: input.fullName ?? existing.fullName,
-        })
-        .save()
-    : await UserFactory.merge({
-        email: input.email,
-        password: input.password,
-        fullName: input.fullName,
-      }).create()
+/** A user carrying a system role, optionally attached to a school. */
+export async function makeUser(
+  role: RoleSlug,
+  school?: School | null,
+  attributes: Partial<{ email: string; fullName: string }> = {}
+): Promise<User> {
+  const user = await UserFactory.merge({
+    ...attributes,
+    schoolUuid: school ? school.uuid : null,
+  }).create()
 
-  if (input.role) await withRole(user, input.role)
+  await withRole(user, role)
 
   return user
 }

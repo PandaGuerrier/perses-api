@@ -2,29 +2,40 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import CreateUser from '#users/actions/create_user'
 import DeleteUser from '#users/actions/delete_user'
+import { grantableRoles } from '#users/actions/sync_user_roles'
 import UpdateUser from '#users/actions/update_user'
+import { PERMISSIONS } from '#users/enums/permission'
 import User from '#users/models/user'
 import UserPolicy from '#users/policies/user_policy'
 import ListUsers from '#users/queries/list_users'
+import RoleTransformer from '#users/transformers/role_transformer'
 import UserTransformer from '#users/transformers/user_transformer'
 import { createUserValidator, editUserValidator, listUserValidator } from '#users/validators/users'
 
 export default class UsersController {
-  public async index({ bouncer, inertia, request }: HttpContext) {
+  public async index({ auth, bouncer, inertia, request }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('viewList')
 
+    const viewer = auth.getUserOrFail()
     const payload = await request.validateUsing(listUserValidator)
 
+    // A school admin never leaves their own organisation; the super-admin does.
+    const platformWide = await viewer.hasPermission(PERMISSIONS.usersViewAny)
+
     const users = await new ListUsers().handle(
-      { q: payload.q, roles: payload.roles, sort: payload.sort, order: payload.order },
+      {
+        q: payload.q,
+        roles: payload.roles,
+        schoolUuid: platformWide ? null : viewer.schoolUuid,
+        sort: payload.sort,
+        order: payload.order,
+      },
       { page: payload.page ?? 1, perPage: payload.perPage ?? 10 }
     )
 
-    const usersData = users.all()
-    await User.preComputeUrls(usersData)
-
     return inertia.render('users/index', {
-      users: UserTransformer.paginate(usersData, users.getMeta()).useVariant('forList'),
+      users: UserTransformer.paginate(users.all(), users.getMeta()).useVariant('forList'),
+      roles: RoleTransformer.transform(await grantableRoles(viewer)).useVariant('forList'),
       q: payload.q,
       selectedRoles: payload.roles ?? [],
       sort: payload.sort ?? null,
@@ -32,29 +43,38 @@ export default class UsersController {
     })
   }
 
-  public async create({ bouncer, inertia }: HttpContext) {
+  public async create({ auth, bouncer, inertia }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
 
-    return inertia.modal('users/create', {}, { route: 'users.index' })
+    return inertia.modal(
+      'users/create',
+      {
+        roles: RoleTransformer.transform(await grantableRoles(auth.getUserOrFail())).useVariant(
+          'forList'
+        ),
+      },
+      { route: 'users.index' }
+    )
   }
 
   public async store({ auth, bouncer, request, response }: HttpContext) {
     await bouncer.with(UserPolicy).authorize('create')
 
     const payload = await request.validateUsing(createUserValidator)
+    const executor = auth.getUserOrFail()
 
     await new CreateUser().handle({
       fullName: payload.fullName,
       email: payload.email,
-      role: payload.role,
-      password: payload.password,
-      executor: auth.user!,
+      roleUuids: payload.roles,
+      schoolUuid: payload.schoolId ?? executor.schoolUuid,
+      executor,
     })
 
     return response.redirect().toRoute('users.index')
   }
 
-  public async edit({ bouncer, inertia, params }: HttpContext) {
+  public async edit({ auth, bouncer, inertia, params }: HttpContext) {
     const user = await User.findOrFail(params.id)
     await user.load('roles')
 
@@ -62,7 +82,12 @@ export default class UsersController {
 
     return inertia.modal(
       'users/edit',
-      { user: UserTransformer.transform(user).useVariant('forEdit') },
+      {
+        user: UserTransformer.transform(user).useVariant('forEdit'),
+        roles: RoleTransformer.transform(await grantableRoles(auth.getUserOrFail())).useVariant(
+          'forList'
+        ),
+      },
       { route: 'users.index' }
     )
   }
@@ -78,9 +103,9 @@ export default class UsersController {
       target: user,
       fullName: payload.fullName,
       email: payload.email,
-      role: payload.role,
-      password: payload.password,
-      executor: auth.user!,
+      roleUuids: payload.roles,
+      schoolUuid: payload.schoolId ?? user.schoolUuid,
+      executor: auth.getUserOrFail(),
     })
 
     return response.redirect().toRoute('users.index')

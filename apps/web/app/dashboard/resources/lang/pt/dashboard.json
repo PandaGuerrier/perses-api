@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Painel",
+    "description": "O que pode alcançar agora.",
+    "breadcrumbs": {
+      "dashboard": "Painel"
+    }
+  },
+  "platform": {
+    "title": "Plataforma",
+    "schools": "Escolas",
+    "users": "Utilizadores",
+    "pending_invitations": "Convites pendentes",
+    "latest": "Escolas recentes"
+  },
+  "school": {
+    "title": "A minha escola",
+    "students": "Alunos",
+    "teachers": "Professores",
+    "groups": "Turmas",
+    "upcoming_exams": "Exames a chegar",
+    "pending_invitations": "Convites pendentes"
+  },
+  "teaching": {
+    "title": "O meu ensino",
+    "groups": "As minhas turmas",
+    "upcoming_exams": "Exames a chegar",
+    "empty_groups": "Ainda sem turmas.",
+    "empty_exams": "Sem exames agendados."
+  },
+  "schedule": {
+    "title": "A minha agenda",
+    "empty": "Sem exames agendados.",
+    "see_all": "Ver a agenda completa"
+  },
+  "empty": {
+    "title": "Ainda não há nada para mostrar",
+    "description": "A sua conta não está associada a nenhuma escola. Um administrador tem de o convidar."
+  }
+}

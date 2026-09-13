@@ -4,9 +4,15 @@
     "module": "ESNext",
     "jsx": "react-jsx",
     "paths": {
-      "config/ssr": ["../../../config/ssr"],
-      "@generated/*": ["../../../.adonisjs/client/*"],
-      "~/*": ["./*"]
+      "config/ssr": [
+        "../../../config/ssr"
+      ],
+      "@generated/*": [
+        "../../../.adonisjs/client/*"
+      ],
+      "~/*": [
+        "./*"
+      ]
     }
   },
   "include": [
@@ -17,19 +23,18 @@
     "../../auth/types/**/*.ts",
     "../../users/ui/**/*.ts",
     "../../users/ui/**/*.tsx",
-    "../../users/types/**/*.ts",
-    "../../marketing/ui/**/*.ts",
-    "../../marketing/ui/**/*.tsx",
     "../../common/ui/**/*.ts",
     "../../common/ui/**/*.tsx",
-    "../../analytics/ui/**/*.ts",
-    "../../analytics/ui/**/*.tsx",
-    "../../home/ui/**/*.ts",
-    "../../home/ui/**/*.tsx",
     "../../public/ui/**/*.ts",
     "../../public/ui/**/*.tsx",
     "../../internal/ui/**/*.ts",
     "../../internal/ui/**/*.tsx",
+    "../../exam/ui/**/*.ts",
+    "../../exam/ui/**/*.tsx",
+    "../../schools/ui/**/*.ts",
+    "../../schools/ui/**/*.tsx",
+    "../../dashboard/ui/**/*.ts",
+    "../../dashboard/ui/**/*.tsx",
     "../../../config/auth.ts",
     "../../../.adonisjs/client/**/*.ts",
     "../../../.adonisjs/server/**/*.d.ts"

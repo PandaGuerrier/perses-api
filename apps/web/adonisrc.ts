@@ -84,9 +84,10 @@ export default defineConfig({
   preloads: [
     () => import('#start/kernel'),
 
+    //common
+    () => import('#common/routes'),
+
     //users
-    () => import('#users/start/view'),
-    () => import('#users/start/events'),
     () => import('#users/routes'),
 
     //auth
@@ -98,6 +99,15 @@ export default defineConfig({
     //internal
     () => import('#internal/start/events'),
     () => import('#internal/routes'),
+
+    //exam
+    () => import('#exam/routes'),
+
+    //schools
+    () => import('#schools/routes'),
+
+    //dashboard
+    () => import('#dashboard/routes'),
   ],
 
   /*

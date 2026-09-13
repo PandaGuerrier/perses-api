@@ -33,20 +33,86 @@ export class AuthAccessTokenSchema extends BaseModel {
 }
 
 export class CheatSchema extends BaseModel {
-  static $columns = ['createdAt', 'domain', 'id', 'observedAt', 'updatedAt', 'userUuid'] as const
+  static $columns = ['createdAt', 'domain', 'observedAt', 'updatedAt', 'userUuid', 'uuid'] as const
   $columns = CheatSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column()
   declare domain: string | null
-  @column({ isPrimary: true })
-  declare id: string
   @column.dateTime()
   declare observedAt: DateTime | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare userUuid: string | null
+  declare userUuid: string
+  @column({ isPrimary: true })
+  declare uuid: string
+}
+
+export class ExamUserSchema extends BaseModel {
+  static $columns = ['createdAt', 'examUuid', 'id', 'userUuid'] as const
+  $columns = ExamUserSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare examUuid: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare userUuid: string
+}
+
+export class ExamSchema extends BaseModel {
+  static $columns = ['createdAt', 'createdByUuid', 'description', 'endsAt', 'schoolUuid', 'startsAt', 'title', 'updatedAt', 'uuid'] as const
+  $columns = ExamSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare createdByUuid: string | null
+  @column()
+  declare description: string | null
+  @column.dateTime()
+  declare endsAt: DateTime
+  @column()
+  declare schoolUuid: string
+  @column.dateTime()
+  declare startsAt: DateTime
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare uuid: string
+}
+
+export class GroupUserSchema extends BaseModel {
+  static $columns = ['createdAt', 'groupUuid', 'id', 'userUuid'] as const
+  $columns = GroupUserSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column()
+  declare groupUuid: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare userUuid: string
+}
+
+export class GroupSchema extends BaseModel {
+  static $columns = ['createdAt', 'name', 'schoolUuid', 'slug', 'updatedAt', 'uuid'] as const
+  $columns = GroupSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare name: string
+  @column()
+  declare schoolUuid: string
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare uuid: string
 }
 
 export class RateLimitSchema extends BaseModel {
@@ -61,18 +127,73 @@ export class RateLimitSchema extends BaseModel {
 }
 
 export class RoleSchema extends BaseModel {
-  static $columns = ['createdAt', 'name', 'permissions', 'updatedAt', 'uuid'] as const
+  static $columns = ['createdAt', 'isSystem', 'name', 'permissions', 'schoolUuid', 'updatedAt', 'uuid'] as const
   $columns = RoleSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime | null
   @column()
+  declare isSystem: boolean
+  @column()
   declare name: string
   @column()
-  declare permissions: string
+  declare permissions: any
+  @column()
+  declare schoolUuid: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column({ isPrimary: true })
   declare uuid: string
+}
+
+export class SchoolInvitationSchema extends BaseModel {
+  static $columns = ['acceptedAt', 'createdAt', 'email', 'invitedByUuid', 'roleUuid', 'schoolUuid', 'updatedAt', 'uuid'] as const
+  $columns = SchoolInvitationSchema.$columns
+  @column.dateTime()
+  declare acceptedAt: DateTime | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare email: string
+  @column()
+  declare invitedByUuid: string | null
+  @column()
+  declare roleUuid: string | null
+  @column()
+  declare schoolUuid: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare uuid: string
+}
+
+export class SchoolSchema extends BaseModel {
+  static $columns = ['createdAt', 'description', 'name', 'slug', 'updatedAt', 'uuid'] as const
+  $columns = SchoolSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string | null
+  @column()
+  declare name: string
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare uuid: string
+}
+
+export class StudentProfileSchema extends BaseModel {
+  static $columns = ['createdAt', 'publicKey', 'updatedAt', 'userUuid'] as const
+  $columns = StudentProfileSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare publicKey: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column({ isPrimary: true })
+  declare userUuid: string
 }
 
 export class UserRoleSchema extends BaseModel {
@@ -89,18 +210,18 @@ export class UserRoleSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'ferrisUuid', 'fullName', 'publicKey', 'updatedAt', 'uuid'] as const
+  static $columns = ['createdAt', 'email', 'ferrisUuid', 'fullName', 'schoolUuid', 'updatedAt', 'uuid'] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
-  declare email: string | null
+  declare email: string
   @column()
   declare ferrisUuid: string | null
   @column()
   declare fullName: string | null
   @column()
-  declare publicKey: string | null
+  declare schoolUuid: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column({ isPrimary: true })

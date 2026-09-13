@@ -3,7 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
-import User from '#users/models/user'
+import type User from '#users/models/user'
 import { EMPTY_GLOBAL_PERMISSIONS, globalPermissions } from '#users/services/global_permissions'
 import UserTransformer from '#users/transformers/user_transformer'
 
@@ -24,7 +24,6 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
 
     if (auth?.user) {
       const user = auth.user as User
-      await User.preComputeUrls(user)
       await user.load('roles')
 
       can = await globalPermissions(user)

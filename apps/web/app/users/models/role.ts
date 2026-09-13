@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { beforeCreate, column, manyToMany } from '@adonisjs/lucid/orm'
-import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import { beforeCreate, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 import BaseModel from '#common/models/base_model'
+import School from '#schools/models/school'
 import User from '#users/models/user'
 
 import { isPermission, type Permission } from '#users/enums/permission'
@@ -14,6 +15,13 @@ export default class Role extends BaseModel {
 
   @column()
   declare name: string
+
+  /** null for the four built-in roles; set for roles an admin created in their school. */
+  @column()
+  declare schoolUuid: string | null
+
+  @column()
+  declare isSystem: boolean
 
   @column({
     prepare: (value: Permission[]) => JSON.stringify(value ?? []),
@@ -35,6 +43,9 @@ export default class Role extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @belongsTo(() => School, { foreignKey: 'schoolUuid', localKey: 'uuid' })
+  declare school: BelongsTo<typeof School>
 
   @manyToMany(() => User, {
     pivotTable: 'user_roles',

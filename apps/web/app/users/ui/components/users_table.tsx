@@ -7,21 +7,22 @@ import {
   type OnChangeFn,
   type SortingState,
 } from '@workspace/ui/components/data-table'
+import { Badge } from '@workspace/ui/components/badge'
+import { Input } from '@workspace/ui/components/input'
 import { useDataTable } from '@workspace/ui/hooks/use-data-table'
 
 import { useTranslation } from '#common/ui/hooks/use_translation'
 import { DataTableRowActions } from '#users/ui/components/users_row_actions'
-import UsersTableFilters from '#users/ui/components/users_table_filters'
-import { Role } from '#users/ui/components/users_types'
 
-import { mainRole, ROLES, type Role as RoleSlug } from '#users/enums/role'
 import type { SortDirection, UsersSortBy } from '#users/enums/sort'
 
 import type { Data } from '@generated/data'
 
+type User = Data.Users.User.Variants['forList']
+
 interface DataTableProps {
   users: {
-    data: Data.Users.User.Variants['forList'][]
+    data: User[]
     metadata: {
       total: number
       perPage: number
@@ -34,25 +35,15 @@ interface DataTableProps {
       previousPageUrl?: string | null
     }
   }
-  roles: Role[]
   q: string | undefined
-  selectedRoles: string[]
   sort: string | null
   order: string | null
 }
 
-export default function UsersTable({
-  users,
-  roles,
-  q,
-  selectedRoles,
-  sort,
-  order,
-}: DataTableProps) {
+export default function UsersTable({ users, q, sort, order }: DataTableProps) {
   const { t } = useTranslation()
 
   const [querySearch, setQuerySearch] = React.useState(q || '')
-  const [selectedRoleSlugs, setSelectedRoleSlugs] = React.useState<string[]>(selectedRoles ?? [])
 
   const sorting = React.useMemo<SortingState>(
     () => (sort && order ? [{ id: sort, desc: order === 'desc' }] : []),
@@ -70,7 +61,6 @@ export default function UsersTable({
         '/users',
         {
           q: querySearch.length > 0 ? querySearch : undefined,
-          roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
           perPage: users.metadata.perPage,
           sort: nextSort,
           order: nextOrder,
@@ -83,68 +73,48 @@ export default function UsersTable({
         }
       )
     },
-    [sorting, querySearch, selectedRoleSlugs, users.metadata.perPage]
+    [sorting, querySearch, users.metadata.perPage]
   )
 
   const remoteTableOptions = useDataTable({
     data: users,
-    visit: ({ page, perPage }) => {
-      return router.get(
+    visit: ({ page, perPage }) =>
+      router.get(
         '/users',
         {
           page,
           perPage,
           q: querySearch.length > 0 ? querySearch : undefined,
-          roles: selectedRoleSlugs.length > 0 ? selectedRoleSlugs : undefined,
           sort: sort ?? undefined,
           order: order ?? undefined,
         },
-        {
-          preserveState: true,
-          preserveScroll: true,
-          replace: true,
-        }
-      )
-    },
+        { preserveState: true, preserveScroll: true, replace: true }
+      ),
     sorting: { state: sorting, onChange: onSortingChange },
   })
 
-  const columns: ColumnDef<Data.Users.User.Variants['forList']>[] = [
+  const columns: ColumnDef<User>[] = [
     {
       id: 'fullName',
       header: t('users.index.table.columns.full_name'),
       accessorKey: 'fullName',
       enableSorting: true,
-      cell: ({ row }) => {
-        const user = row.original
-        const slug: RoleSlug = mainRole(user.roles) ?? ROLES.USER
-        const userRole = roles.find(({ value }) => value === slug)
-        return (
-          <div className="min-w-0">
-            <div className="truncate font-medium">
-              {user.fullName ? (
-                user.fullName
-              ) : (
-                <span className="text-muted-foreground italic">
-                  {t('users.index.table.not_provided')}
-                </span>
-              )}
-            </div>
-            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground sm:hidden">
-              <span className="truncate">{user.email}</span>
-              {userRole && (
-                <>
-                  <span className="text-muted-foreground/60">·</span>
-                  <span className="inline-flex items-center gap-1 capitalize">
-                    {userRole.icon && <userRole.icon size={12} />}
-                    {userRole.label}
-                  </span>
-                </>
-              )}
-            </div>
+      cell: ({ row }) => (
+        <div className="min-w-0">
+          <div className="truncate font-medium">
+            {row.original.fullName ? (
+              row.original.fullName
+            ) : (
+              <span className="italic text-muted-foreground">
+                {t('users.index.table.not_provided')}
+              </span>
+            )}
           </div>
-        )
-      },
+          <div className="truncate text-xs text-muted-foreground sm:hidden">
+            {row.original.email}
+          </div>
+        </div>
+      ),
     },
     {
       id: 'email',
@@ -154,26 +124,21 @@ export default function UsersTable({
       meta: { columnClasses: 'hidden sm:table-cell' },
     },
     {
-      id: 'role',
-      accessorFn: (user) => mainRole(user.roles) ?? ROLES.USER,
+      // Roles are rows now, not an enum — a user can carry a system role plus
+      // any number of school-scoped custom ones, so they all get a badge.
+      id: 'roles',
       header: t('users.index.table.columns.role'),
       enableSorting: false,
       meta: { columnClasses: 'hidden md:table-cell' },
-      cell: ({ row }) => {
-        const slug: RoleSlug = mainRole(row.original.roles) ?? ROLES.USER
-        const userRole = roles.find(({ value }) => value === slug)
-
-        if (!userRole) {
-          return null
-        }
-
-        return (
-          <div className="flex gap-x-2 items-center">
-            {userRole.icon && <userRole.icon size={16} className="text-muted-foreground" />}
-            <span className="capitalize text-sm">{userRole.label}</span>
-          </div>
-        )
-      },
+      cell: ({ row }) => (
+        <div className="flex flex-wrap gap-1">
+          {row.original.roles.map((role) => (
+            <Badge key={role} variant="secondary" className="capitalize">
+              {role.replace('_', ' ')}
+            </Badge>
+          ))}
+        </div>
+      ),
     },
     {
       id: 'createdAt',
@@ -194,20 +159,22 @@ export default function UsersTable({
 
   return (
     <div className="space-y-4">
-      <UsersTableFilters
-        roles={roles}
-        querySearch={querySearch}
-        setQuerySearch={setQuerySearch}
-        selectedRoles={selectedRoleSlugs}
-        setSelectedRoles={setSelectedRoleSlugs}
-        perPage={users.metadata.perPage}
+      <Input
+        value={querySearch}
+        placeholder={t('users.index.table.columns.email')}
+        className="h-9 w-full max-w-sm"
+        onChange={(event) => setQuerySearch(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            router.get(
+              '/users',
+              { q: querySearch.length > 0 ? querySearch : undefined },
+              { preserveState: true, preserveScroll: true, replace: true }
+            )
+          }
+        }}
       />
-      <DataTable
-        columns={columns}
-        data={users.data}
-        t={t}
-        remoteTableOptions={remoteTableOptions}
-      />
+      <DataTable columns={columns} data={users.data} t={t} remoteTableOptions={remoteTableOptions} />
     </div>
   )
 }

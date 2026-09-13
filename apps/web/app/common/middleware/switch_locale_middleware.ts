@@ -14,14 +14,6 @@ export default class SwitchLocaleMiddleware {
 
     setUserLocaleCookie(ctx.response, locale)
 
-    try {
-      const user = await ctx.auth.use('web').authenticate()
-      user.locale = locale
-      await user.save()
-    } catch {
-      // Anonymous request — cookie fallback is enough.
-    }
-
     return ctx.response.redirect().back()
   }
 }

@@ -12,7 +12,7 @@ export default class SocketTesting extends BaseCommand {
   async run() {
     this.logger.info('Hello world from "SocketTesting"')
 
-    const path = env.get("SOCKET_PATH")
+    const path = env.get('SOCKET_PATH')
 
     const client = net.createConnection(path)
     client.write('Ma ligne brute\n')

@@ -7,17 +7,26 @@ export const controllers = {
   auth: {
     Auth: () => import('#app/auth/controllers/auth_controller'),
   },
+  dashboard: {
+    Dashboard: () => import('#app/dashboard/controllers/dashboard_controller'),
+  },
+  exam: {
+    Exams: () => import('#app/exam/controllers/exams_controller'),
+    Schedule: () => import('#app/exam/controllers/schedule_controller'),
+  },
   internal: {
     Internal: () => import('#app/internal/controllers/internal_controller'),
   },
   public: {
     Public: () => import('#app/public/controllers/public_controller'),
   },
+  schools: {
+    Groups: () => import('#app/schools/controllers/groups_controller'),
+    Members: () => import('#app/schools/controllers/members_controller'),
+    Schools: () => import('#app/schools/controllers/schools_controller'),
+  },
   users: {
-    Impersonates: () => import('#app/users/controllers/impersonates_controller'),
-    Invite: () => import('#app/users/controllers/invite_controller'),
-    Password: () => import('#app/users/controllers/password_controller'),
-    Profile: () => import('#app/users/controllers/profile_controller'),
+    Roles: () => import('#app/users/controllers/roles_controller'),
     Settings: () => import('#app/users/controllers/settings_controller'),
     Tokens: () => import('#app/users/controllers/tokens_controller'),
     Users: () => import('#app/users/controllers/users_controller'),

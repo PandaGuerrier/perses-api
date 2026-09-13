@@ -4,9 +4,8 @@ import { test } from '@japa/runner'
 import CreateToken from '#users/actions/create_token'
 import User from '#users/models/user'
 import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
 import { assertForbiddenRedirect } from '#tests/helpers/http'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { createSchool, ensureBaseRoles, makeUser } from '#tests/helpers/rbac'
 
 test.group('Endpoint /settings/tokens', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -15,12 +14,11 @@ test.group('Endpoint /settings/tokens', (group) => {
   test('POST sem auth redireciona para login', async ({ client, assert }) => {
     const response = await client.post('/settings/tokens').withCsrfToken().redirects(0).json({})
     response.assertStatus(302)
-    assert.equal(response.header('location'), '/login')
+    assert.equal(response.header('location'), '/auth')
   })
 
   test('POST como user comum eh barrado e nao cria token', async ({ client, assert }) => {
-    const user = await UserFactory.create()
-    await withRole(user, ROLES.USER)
+    const user = await makeUser(ROLES.STUDENT, await createSchool())
 
     const response = await client
       .post('/settings/tokens')
@@ -34,8 +32,7 @@ test.group('Endpoint /settings/tokens', (group) => {
   })
 
   test('POST como admin cria token e redireciona pra /settings', async ({ client, assert }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
+    const admin = await makeUser(ROLES.ADMIN, await createSchool())
 
     const response = await client
       .post('/settings/tokens')
@@ -53,8 +50,7 @@ test.group('Endpoint /settings/tokens', (group) => {
   })
 
   test('POST rejeita nome curto (422)', async ({ client }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
+    const admin = await makeUser(ROLES.ADMIN, await createSchool())
 
     const response = await client
       .post('/settings/tokens')
@@ -68,8 +64,7 @@ test.group('Endpoint /settings/tokens', (group) => {
   })
 
   test('DELETE remove token proprio como admin', async ({ client, assert }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
+    const admin = await makeUser(ROLES.ADMIN, await createSchool())
     await new CreateToken().handle({ owner: admin })
     const [token] = await User.accessTokens.all(admin)
 
@@ -88,8 +83,7 @@ test.group('Endpoint /settings/tokens', (group) => {
     client,
     assert,
   }) => {
-    const user = await UserFactory.create()
-    await withRole(user, ROLES.USER)
+    const user = await makeUser(ROLES.STUDENT, await createSchool())
     await new CreateToken().handle({ owner: user })
     const [token] = await User.accessTokens.all(user)
 

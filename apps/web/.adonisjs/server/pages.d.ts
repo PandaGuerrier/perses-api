@@ -15,12 +15,27 @@ declare module '@adonisjs/inertia/types' {
     'auth/index': ExtractProps<(typeof import('../../app/auth/ui/pages/index.tsx'))['default']>
     'core/errors/not_found': ExtractProps<(typeof import('../../app/core/ui/pages/errors/not_found.tsx'))['default']>
     'core/errors/server_error': ExtractProps<(typeof import('../../app/core/ui/pages/errors/server_error.tsx'))['default']>
+    'dashboard/index': ExtractProps<(typeof import('../../app/dashboard/ui/pages/index.tsx'))['default']>
+    'exam/create': ExtractProps<(typeof import('../../app/exam/ui/pages/create.tsx'))['default']>
+    'exam/edit': ExtractProps<(typeof import('../../app/exam/ui/pages/edit.tsx'))['default']>
+    'exam/index': ExtractProps<(typeof import('../../app/exam/ui/pages/index.tsx'))['default']>
+    'exam/schedule': ExtractProps<(typeof import('../../app/exam/ui/pages/schedule.tsx'))['default']>
     'internal/index': ExtractProps<(typeof import('../../app/internal/ui/pages/index.tsx'))['default']>
     'public/index': ExtractProps<(typeof import('../../app/public/ui/pages/index.tsx'))['default']>
+    'schools/create': ExtractProps<(typeof import('../../app/schools/ui/pages/create.tsx'))['default']>
+    'schools/edit': ExtractProps<(typeof import('../../app/schools/ui/pages/edit.tsx'))['default']>
+    'schools/groups/create': ExtractProps<(typeof import('../../app/schools/ui/pages/groups/create.tsx'))['default']>
+    'schools/groups/edit': ExtractProps<(typeof import('../../app/schools/ui/pages/groups/edit.tsx'))['default']>
+    'schools/groups/index': ExtractProps<(typeof import('../../app/schools/ui/pages/groups/index.tsx'))['default']>
+    'schools/groups/show': ExtractProps<(typeof import('../../app/schools/ui/pages/groups/show.tsx'))['default']>
+    'schools/index': ExtractProps<(typeof import('../../app/schools/ui/pages/index.tsx'))['default']>
+    'schools/members/index': ExtractProps<(typeof import('../../app/schools/ui/pages/members/index.tsx'))['default']>
     'users/create': ExtractProps<(typeof import('../../app/users/ui/pages/create.tsx'))['default']>
     'users/edit': ExtractProps<(typeof import('../../app/users/ui/pages/edit.tsx'))['default']>
     'users/index': ExtractProps<(typeof import('../../app/users/ui/pages/index.tsx'))['default']>
-    'users/invite': ExtractProps<(typeof import('../../app/users/ui/pages/invite.tsx'))['default']>
+    'users/roles/create': ExtractProps<(typeof import('../../app/users/ui/pages/roles/create.tsx'))['default']>
+    'users/roles/edit': ExtractProps<(typeof import('../../app/users/ui/pages/roles/edit.tsx'))['default']>
+    'users/roles/index': ExtractProps<(typeof import('../../app/users/ui/pages/roles/index.tsx'))['default']>
     'users/settings': ExtractProps<(typeof import('../../app/users/ui/pages/settings.tsx'))['default']>
   }
 }

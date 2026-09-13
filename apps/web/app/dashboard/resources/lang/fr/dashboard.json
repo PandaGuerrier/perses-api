@@ -1,0 +1,40 @@
+{
+  "page": {
+    "title": "Tableau de bord",
+    "description": "Ce à quoi vous avez accès.",
+    "breadcrumbs": {
+      "dashboard": "Tableau de bord"
+    }
+  },
+  "platform": {
+    "title": "Plateforme",
+    "schools": "Établissements",
+    "users": "Utilisateurs",
+    "pending_invitations": "Invitations en attente",
+    "latest": "Derniers établissements"
+  },
+  "school": {
+    "title": "Mon établissement",
+    "students": "Élèves",
+    "teachers": "Professeurs",
+    "groups": "Groupes",
+    "upcoming_exams": "Examens à venir",
+    "pending_invitations": "Invitations en attente"
+  },
+  "teaching": {
+    "title": "Mon enseignement",
+    "groups": "Mes groupes",
+    "upcoming_exams": "Examens à venir",
+    "empty_groups": "Aucun groupe pour le moment.",
+    "empty_exams": "Aucun examen planifié."
+  },
+  "schedule": {
+    "title": "Mon emploi du temps",
+    "empty": "Aucun examen planifié.",
+    "see_all": "Voir tout l'emploi du temps"
+  },
+  "empty": {
+    "title": "Rien à afficher pour le moment",
+    "description": "Votre compte n'est rattaché à aucun établissement. Un administrateur doit vous inviter."
+  }
+}

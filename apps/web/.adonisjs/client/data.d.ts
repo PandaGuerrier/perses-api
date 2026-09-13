@@ -6,19 +6,48 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
+import type ExamExamTransformer from '#app/exam/transformers/exam_transformer'
 import type InternalCheatsTransformer from '#app/internal/transformers/cheats_transformer'
+import type SchoolsGroupTransformer from '#app/schools/transformers/group_transformer'
+import type SchoolsSchoolInvitationTransformer from '#app/schools/transformers/school_invitation_transformer'
+import type SchoolsSchoolTransformer from '#app/schools/transformers/school_transformer'
+import type UsersRoleTransformer from '#app/users/transformers/role_transformer'
 import type UsersTokenTransformer from '#app/users/transformers/token_transformer'
 import type UsersUserTransformer from '#app/users/transformers/user_transformer'
 import type InertiaMiddleware from '#core/middleware/inertia_middleware'
 
 export namespace Data {
+  export namespace Exam {
+    export type Exam = InferData<ExamExamTransformer>
+    export namespace Exam {
+      export type Variants = InferVariants<ExamExamTransformer>
+    }
+  }
   export namespace Internal {
     export type Cheats = InferData<InternalCheatsTransformer>
     export namespace Cheats {
       export type Variants = InferVariants<InternalCheatsTransformer>
     }
   }
+  export namespace Schools {
+    export type Group = InferData<SchoolsGroupTransformer>
+    export namespace Group {
+      export type Variants = InferVariants<SchoolsGroupTransformer>
+    }
+    export type SchoolInvitation = InferData<SchoolsSchoolInvitationTransformer>
+    export namespace SchoolInvitation {
+      export type Variants = InferVariants<SchoolsSchoolInvitationTransformer>
+    }
+    export type School = InferData<SchoolsSchoolTransformer>
+    export namespace School {
+      export type Variants = InferVariants<SchoolsSchoolTransformer>
+    }
+  }
   export namespace Users {
+    export type Role = InferData<UsersRoleTransformer>
+    export namespace Role {
+      export type Variants = InferVariants<UsersRoleTransformer>
+    }
     export type Token = InferData<UsersTokenTransformer>
     export namespace Token {
       export type Variants = InferVariants<UsersTokenTransformer>

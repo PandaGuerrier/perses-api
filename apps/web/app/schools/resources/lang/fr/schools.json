@@ -1,0 +1,79 @@
+{
+  "index": {
+    "page": {
+      "title": "Établissements",
+      "description": "Toutes les organisations de la plateforme.",
+      "breadcrumbs": {
+        "schools": "Établissements"
+      }
+    },
+    "table": {
+      "name": "Nom",
+      "members": "Membres",
+      "groups": "Groupes",
+      "created_at": "Créé le"
+    }
+  },
+  "groups": {
+    "page": {
+      "title": "Groupes",
+      "description": "Les classes de votre établissement.",
+      "breadcrumbs": {
+        "groups": "Groupes"
+      }
+    },
+    "table": {
+      "name": "Nom",
+      "school": "Établissement",
+      "students": "Élèves",
+      "created_at": "Créé le"
+    },
+    "detail": {
+      "students": "Élèves du groupe",
+      "candidates": "Ajouter un élève",
+      "empty": "Aucun élève dans ce groupe.",
+      "save": "Enregistrer la classe"
+    }
+  },
+  "members": {
+    "page": {
+      "title": "Membres",
+      "description": "Les personnes rattachées à cet établissement.",
+      "breadcrumbs": {
+        "members": "Membres"
+      }
+    },
+    "table": {
+      "name": "Nom",
+      "email": "E-mail",
+      "roles": "Rôles",
+      "created_at": "Arrivé le"
+    },
+    "invitations": {
+      "title": "Invitations en attente",
+      "description": "Elles seront rattachées à la première connexion.",
+      "empty": "Aucune invitation en attente.",
+      "revoke": "Révoquer"
+    },
+    "invite": {
+      "title": "Inviter par e-mail",
+      "email": "Adresse e-mail",
+      "role": "Rôle",
+      "submit": "Envoyer l'invitation",
+      "no_role": "Aucun rôle"
+    }
+  },
+  "action": {
+    "create": "Nouvel établissement",
+    "edit": "Modifier l'établissement",
+    "delete": "Supprimer l'établissement",
+    "create_group": "Nouveau groupe",
+    "edit_group": "Modifier le groupe",
+    "delete_group": "Supprimer le groupe",
+    "name": "Nom",
+    "description": "Description",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "remove_member": "Retirer de l'établissement"
+  }
+}

@@ -1,12 +1,13 @@
 import type { ModelPaginatorContract } from '@adonisjs/lucid/types/model'
 
-import type { Role as RoleSlug } from '#users/enums/role'
 import { USERS_SORT_COLUMN, type SortDirection, type UsersSortBy } from '#users/enums/sort'
 import User from '#users/models/user'
 
 export interface ListUsersFilters {
   q?: string
-  roles?: RoleSlug[]
+  roles?: string[]
+  /** null keeps the query platform-wide; a uuid restricts it to one school. */
+  schoolUuid?: string | null
   sort?: UsersSortBy
   order?: SortDirection
 }
@@ -21,7 +22,11 @@ export default class ListUsers {
     filters: ListUsersFilters = {},
     pag: ListUsersPagination = { page: 1, perPage: 10 }
   ): Promise<ModelPaginatorContract<User>> {
-    const query = User.query().preload('roles')
+    const query = User.query().preload('roles').preload('school')
+
+    if (filters.schoolUuid) {
+      query.where('school_uuid', filters.schoolUuid)
+    }
 
     if (filters.q) {
       const term = `%${filters.q}%`
@@ -34,13 +39,13 @@ export default class ListUsers {
       query.whereHas('roles', (rolesQuery) => rolesQuery.whereIn('name', filters.roles!))
     }
 
-    // Tiebreaker: without `id asc` a shared sorted value can swap pages between requests.
+    // Tiebreaker: without `uuid asc` a shared sorted value can swap pages between requests.
     if (filters.sort) {
       query.orderBy(USERS_SORT_COLUMN[filters.sort], filters.order ?? 'asc')
     } else {
       query.orderBy('created_at', 'desc')
     }
-    query.orderBy('id', 'asc')
+    query.orderBy('uuid', 'asc')
 
     return query.paginate(pag.page, pag.perPage)
   }

@@ -2,14 +2,13 @@ import type { InertiaProps } from '#core/ui/types'
 import type { Data } from '@generated/data'
 
 import AuthenticatedLayout from '#common/ui/components/authenticated_layout'
-import { AppearanceForm } from '#users/ui/components/appearance_form'
-import { PasswordForm } from '#users/ui/components/password_form'
-import { ProfileForm } from '#users/ui/components/profile_form'
-import { SettingsSection } from '#users/ui/components/settings_section'
 import { TokensSection } from '#users/ui/components/tokens_section'
 
 import useCan from '#common/ui/hooks/use_can'
 import { useTranslation } from '#common/ui/hooks/use_translation'
+
+import { Badge } from '@workspace/ui/components/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@workspace/ui/components/card'
 
 type PageProps = InertiaProps<{
   profile: Data.Users.User.Variants['forProfile']
@@ -29,36 +28,26 @@ export default function SettingsPage({ profile, tokens, newToken }: PageProps) {
           <p className="mt-1 text-sm text-muted-foreground">{t('users.layout.description')}</p>
         </header>
 
-        <SettingsSection
-          title={t('users.profile.title')}
-          description={t('users.profile.description')}
-        >
-          <ProfileForm user={profile} />
-        </SettingsSection>
-
-        <SettingsSection
-          title={t('users.password.title')}
-          description={t('users.password.description')}
-        >
-          <PasswordForm />
-        </SettingsSection>
-
-        <SettingsSection
-          title={t('users.appearance.title')}
-          description={t('users.appearance.description')}
-          last={!can.manageTokens}
-        >
-          <AppearanceForm />
-        </SettingsSection>
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>{profile.fullName || profile.email}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">{profile.email}</p>
+            <div className="flex flex-wrap gap-1">
+              {profile.roles.map((role) => (
+                <Badge key={role} variant="secondary" className="capitalize">
+                  {role.replace('_', ' ')}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {can.manageTokens && (
-          <SettingsSection
-            title={t('users.tokens.title')}
-            description={t('users.tokens.description')}
-            last
-          >
+          <div className="mt-8">
             <TokensSection tokens={tokens} newToken={newToken} />
-          </SettingsSection>
+          </div>
         )}
       </div>
     </AuthenticatedLayout>

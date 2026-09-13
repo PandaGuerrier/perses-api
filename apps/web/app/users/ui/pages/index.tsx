@@ -6,8 +6,8 @@ import { Main } from '#common/ui/components/main'
 
 import { UsersPrimaryButtons } from '#users/ui/components/users_primary_buttons'
 import UsersTable from '#users/ui/components/users_table'
-import { userRoles } from '#users/ui/components/users_types'
 
+import useCan from '#common/ui/hooks/use_can'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import type { Data } from '@generated/data'
@@ -27,16 +27,16 @@ type PageProps = InertiaProps<{
       previousPageUrl?: string | null
     }
   }
+  roles: Data.Users.Role.Variants['forList'][]
   q?: string
   selectedRoles: string[]
   sort: string | null
   order: string | null
 }>
 
-export default function ListUsersPage({ users, q, selectedRoles, sort, order }: PageProps) {
+export default function ListUsersPage({ users, q, sort, order }: PageProps) {
   const { t } = useTranslation()
-
-  const roles = userRoles(t)
+  const can = useCan()
 
   return (
     <AdminLayout breadcrumbs={[{ label: t('users.index.page.breadcrumbs.users') }]}>
@@ -45,18 +45,11 @@ export default function ListUsersPage({ users, q, selectedRoles, sort, order }: 
           title={t('users.index.page.title')}
           description={t('users.index.page.description')}
         >
-          <UsersPrimaryButtons />
+          {can.manageSchools && <UsersPrimaryButtons />}
         </Heading>
 
-        <div className="flex-1 overflow-auto px-1 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <UsersTable
-            users={users}
-            roles={roles}
-            q={q}
-            selectedRoles={selectedRoles}
-            sort={sort}
-            order={order}
-          />
+        <div className="flex-1 overflow-auto px-1 py-1">
+          <UsersTable users={users} q={q} sort={sort} order={order} />
         </div>
       </Main>
     </AdminLayout>

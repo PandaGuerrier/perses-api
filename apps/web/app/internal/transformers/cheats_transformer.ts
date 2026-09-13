@@ -1,14 +1,14 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
-import Cheat from '#internal/models/cheat'
-import UserTransformer from '#users/transformers/user_transformer'
+
+import type Cheat from '#internal/models/cheat'
 
 export default class CheatsTransformer extends BaseTransformer<Cheat> {
   toObject() {
-    this.resource.load('user')
     return {
-      user: UserTransformer.transform(this.resource.user),
+      id: this.resource.uuid,
+      userId: this.resource.userUuid,
       domain: this.resource.domain,
-      observed_at: this.resource.observedAt,
+      observedAt: this.resource.observedAt?.toISO() ?? null,
     }
   }
 }

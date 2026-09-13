@@ -25,9 +25,9 @@ test.group('TokenPolicy', (group) => {
     assert.isTrue(await p.delete(admin))
   })
 
-  test('user comum nao pode criar/listar/deletar', async ({ assert }) => {
+  test('a student cannot create, list or delete tokens', async ({ assert }) => {
     const user = await UserFactory.create()
-    await withRole(user, ROLES.USER)
+    await withRole(user, ROLES.STUDENT)
     const p = await policy()
 
     assert.isFalse(await p.create(user))

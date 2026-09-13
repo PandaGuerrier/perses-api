@@ -28,7 +28,6 @@ export default class SocketProvider {
 
     if (fs.existsSync(path)) fs.unlinkSync(path)
 
-
     this.server = net.createServer((socket) => {
       socket.setEncoding('utf8')
 

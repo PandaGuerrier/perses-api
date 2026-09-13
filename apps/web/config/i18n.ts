@@ -26,10 +26,13 @@ const i18nConfig = defineConfig({
       location: app.makePath('app/common/resources/lang'),
     }),
     loaders.fs({
-      location: app.makePath('app/auth/resources/lang'),
+      location: app.makePath('app/schools/resources/lang'),
     }),
     loaders.fs({
-      location: app.makePath('app/analytics/resources/lang'),
+      location: app.makePath('app/dashboard/resources/lang'),
+    }),
+    loaders.fs({
+      location: app.makePath('app/exam/resources/lang'),
     }),
   ],
 })

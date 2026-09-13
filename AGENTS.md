@@ -32,7 +32,7 @@ Before reporting completion:
 
 ## Architecture — module per bounded context
 
-Every bounded context lives at `app/<mod>/` as a self-contained module. A module owns the ubiquitous language of one context and may hold multiple aggregates inside — modules are **not** 1:1 with aggregates. Existing modules: `auth`, `users`, `marketing`, `analytics`, `common`, `core`, `notifications`. Each module dir is aliased as `#<mod>/*` in `apps/web/package.json` → `"imports"` — see the `module-scaffolding` skill to add one.
+Every bounded context lives at `app/<mod>/` as a self-contained module. A module owns the ubiquitous language of one context and may hold multiple aggregates inside — modules are **not** 1:1 with aggregates. Existing modules: `auth`, `users`, `schools`, `exam`, `dashboard`, `public`, `internal`, `common`, `core`. Each module dir is aliased as `#<mod>/*` in `apps/web/package.json` → `"imports"` — see the `module-scaffolding` skill to add one.
 
 ```
 app/<module>/
@@ -57,7 +57,18 @@ app/<module>/
 
 ### Dependency direction
 
-Feature modules (`auth`, `users`, `marketing`, `analytics`, `notifications`) depend only on `common`, `core`, and themselves. The one sanctioned exception is `auth → users` — auth is behavior over the identity aggregate that `users` owns. `core` and `common` may import `User`: that's the assumed cost of typed shared props. Don't introduce a new feature→feature dependency without adding it here first.
+Feature modules depend only on `common`, `core`, and themselves. `core` and `common` may import `User`: that's the assumed cost of typed shared props. Don't introduce a new feature→feature dependency without adding it here first.
+
+Sanctioned exceptions:
+
+- `auth → users`, `auth → schools` — auth is behavior over the identity aggregate `users` owns, and the OIDC callback consumes a pending school invitation.
+- `schools → users` — a school's members and its custom roles are `users` rows.
+- `exam → schools`, `exam → users` — an exam belongs to a school and targets students directly.
+- `dashboard → *` — the dashboard is a read-only composition over every other module.
+
+### Roles are bundles of permissions
+
+`super_admin`, `admin`, `teacher` and `student` are seeded rows (`is_system`, `school_uuid = null`), not an enum the code branches on — **no policy ever tests a role name**. A school admin widens what their staff can do by authoring a school-scoped custom role, which is why `teacher` ships without `exams.create`. Policies combine a capability with school membership through `sameSchool` / `scopedTo` in `app/users/policies/scope.ts`; `schools.view_any` is the super-admin's escape hatch. `GlobalPermissions` in `app/users/services/global_permissions.ts` projects the catalogue into the `can` shared prop, which gates both `useCan()` and every nav item.
 
 ### Naming is wiring
 
@@ -92,6 +103,8 @@ Detailed conventions live as agent skills in `packages/skills/`, in the [Vercel 
 - `notifications` — Facteur + Transmit stack, per-user SSE channel, bell + unseen count.
 - `attachment` — `@jrmc/adonis-attachment` converters + model decoration + `preComputeUrls`.
 - `migrations` — starter kit convention: edit existing `create_<table>` migrations + `migration:fresh` instead of layering `alter_table`.
+
+⚠️ Migrations run **directory by directory** in the order `config/database.ts` lists, never interleaved by timestamp. A cross-module foreign key therefore constrains that order: `schools` is created from its own `migrations_bootstrap/` path because `users.school_uuid` points at it, while the rest of the schools module points back at `users` and runs after it.
 
 **Git**
 

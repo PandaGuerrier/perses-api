@@ -6,6 +6,6 @@ export const UserFactory = Factory.define(User, ({ faker }) => {
   return {
     fullName: faker.internet.username(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
+    ferrisUuid: faker.string.uuid(),
   }
 }).build()

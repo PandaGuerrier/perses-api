@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { EditIcon, EllipsisIcon, TrashIcon, UserRoundSearch } from 'lucide-react'
+import { EditIcon, EllipsisIcon, TrashIcon } from 'lucide-react'
 import { ModalLink } from 'adonis-inertia-modal/react'
 
 import { Button } from '@workspace/ui/components/button'
@@ -18,7 +18,6 @@ import useUser from '#auth/ui/hooks/use_user'
 import { useTranslation } from '#common/ui/hooks/use_translation'
 
 import { UsersDeleteDialog } from '#users/ui/components/users_delete_dialog'
-import { UsersImpersonateDialog } from '#users/ui/components/users_impersonate_dialog'
 
 import type { Data } from '@generated/data'
 
@@ -29,7 +28,8 @@ export function DataTableRowActions({
   const { t } = useTranslation()
 
   const [openDelete, setOpenDelete] = useState(false)
-  const [openImpersonate, setOpenImpersonate] = useState(false)
+
+  const isSelf = user?.id === row.original.id
 
   return (
     <>
@@ -41,14 +41,6 @@ export function DataTableRowActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          {user.id !== row.original.id && (
-            <DropdownMenuItem onClick={() => setOpenImpersonate(true)}>
-              {t('users.index.table.row_actions.impersonate')}
-              <DropdownMenuShortcut>
-                <UserRoundSearch size={16} />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-          )}
           <DropdownMenuItem asChild>
             <ModalLink
               href={urlFor('users.edit', { id: row.original.id })}
@@ -60,7 +52,7 @@ export function DataTableRowActions({
               </DropdownMenuShortcut>
             </ModalLink>
           </DropdownMenuItem>
-          {user.id !== row.original.id && (
+          {!isSelf && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setOpenDelete(true)} className="text-destructive">
@@ -75,11 +67,6 @@ export function DataTableRowActions({
       </DropdownMenu>
 
       <UsersDeleteDialog open={openDelete} onOpenChange={setOpenDelete} currentRow={row.original} />
-      <UsersImpersonateDialog
-        open={openImpersonate}
-        onOpenChange={setOpenImpersonate}
-        currentRow={row.original}
-      />
     </>
   )
 }

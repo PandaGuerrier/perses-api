@@ -1,0 +1,40 @@
+{
+  "index": {
+    "page": {
+      "title": "Exams",
+      "description": "Scheduled exams for your school.",
+      "breadcrumbs": {
+        "exams": "Exams"
+      }
+    },
+    "table": {
+      "title": "Title",
+      "starts_at": "Starts",
+      "ends_at": "Ends",
+      "students": "Students"
+    }
+  },
+  "schedule": {
+    "page": {
+      "title": "My schedule",
+      "description": "Your upcoming exams.",
+      "breadcrumbs": {
+        "schedule": "Schedule"
+      }
+    },
+    "empty": "No exam scheduled."
+  },
+  "action": {
+    "create": "New exam",
+    "edit": "Edit exam",
+    "delete": "Delete exam",
+    "title": "Title",
+    "description": "Description",
+    "starts_at": "Starts at",
+    "ends_at": "Ends at",
+    "students": "Students",
+    "fill_from_group": "Fill from a group",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}

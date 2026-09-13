@@ -5,8 +5,14 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('id').primary()
-      table.uuid('user_uuid').references('users.uuid').onDelete('CASCADE')
+      table.uuid('uuid').primary()
+      table
+        .uuid('user_uuid')
+        .notNullable()
+        .references('uuid')
+        .inTable('users')
+        .onDelete('CASCADE')
+        .index()
       table.string('domain')
       table.timestamp('observed_at')
 

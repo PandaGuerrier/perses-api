@@ -7,19 +7,12 @@
     "tokens": "Tokens",
     "appearance": "Aparência"
   },
-  "appearance": {
-    "breadcrumbs": {
-      "settings": "Configurações"
-    },
-    "title": "Aparência",
-    "description": "Personalize a aparência da aplicação. Alterne automaticamente entre os temas claro e escuro."
-  },
   "index": {
     "page": {
-      "title": "Usuários",
-      "description": "Gerencie os usuários da sua aplicação",
+      "title": "Utilizadores",
+      "description": "Todas as pessoas com acesso.",
       "breadcrumbs": {
-        "users": "Usuários"
+        "users": "Utilizadores"
       }
     },
     "table": {
@@ -36,7 +29,6 @@
         "no_results": "Nenhum resultado encontrado."
       },
       "row_actions": {
-        "impersonate": "Entrar como",
         "edit": "Editar",
         "delete": "Excluir",
         "open_menu": "Abrir menu",
@@ -45,23 +37,8 @@
       "not_provided": "Não informado"
     },
     "toolbar": {
-      "invite": "Convidar",
       "add": "Adicionar"
     }
-  },
-  "password": {
-    "breadcrumbs": {
-      "settings": "Configurações"
-    },
-    "title": "Atualizar senha",
-    "description": "Garanta que sua conta esteja usando uma senha longa e aleatória para manter-se segura"
-  },
-  "profile": {
-    "breadcrumbs": {
-      "settings": "Configurações"
-    },
-    "title": "Informações do perfil",
-    "description": "Atualize seu nome e endereço de e-mail"
   },
   "tokens": {
     "breadcrumbs": {
@@ -159,60 +136,34 @@
       "title": "O seguinte token foi excluído:"
     }
   },
-  "impersonate": {
-    "title": "Assumir Usuário",
-    "description": "Tem certeza de que deseja assumir <strong1>{{email}}</strong1>? Esta ação permitirá que você atue como este usuário (Função: <strong2>{{role}}</strong2>) no sistema.",
-    "confirm_button": "Assumir",
-    "alert": {
-      "title": "Atenção",
-      "description": "Você pode voltar para sua conta original a qualquer momento fazendo logout."
-    },
-    "toast": {
-      "title": "Você agora está assumindo o seguinte usuário:"
-    }
+  "roles": {
+    "super_admin": "Super admin",
+    "admin": "Admin",
+    "teacher": "Professor",
+    "student": "Aluno"
   },
-  "invite": {
-    "title": "Convidar Usuário",
-    "description": "Convide um novo usuário para sua equipe enviando um convite por e-mail. Atribua uma função para definir o nível de acesso.",
-    "form": {
-      "email": {
-        "label": "E-mail",
-        "placeholder": "Digite o e-mail do usuário"
-      },
-      "role": {
-        "label": "Função",
-        "placeholder": "Selecione uma função"
-      },
-      "description": {
-        "label": "Descrição (opcional)",
-        "placeholder": "Adicione uma mensagem pessoal ao convite (opcional)"
+  "roles_screen": {
+    "page": {
+      "title": "Funções e permissões",
+      "description": "As funções de sistema são só de leitura. Crie uma função para conceder permissões extra.",
+      "breadcrumbs": {
+        "roles": "Funções"
       }
     },
-    "actions": {
+    "table": {
+      "name": "Nome",
+      "scope": "Âmbito",
+      "permissions": "Permissões",
+      "system": "Sistema",
+      "custom": "Personalizada"
+    },
+    "action": {
+      "create": "Nova função",
+      "edit": "Editar função",
+      "delete": "Eliminar função",
+      "save": "Guardar",
       "cancel": "Cancelar",
-      "submit": "Enviar Convite"
-    },
-    "toast": {
-      "title": "Você enviou os seguintes valores:"
-    }
-  },
-  "emails": {
-    "welcome": {
-      "subject": "Bem-vindo!",
-      "title": "Bem-vindo {full_name}!",
-      "subtitle": "Estamos muito felizes em ter você conosco.",
-      "action_btn": "Comece agora",
-      "default_message": "Obrigado por se juntar à nossa comunidade. Explore nossos recursos e comece sua jornada conosco. Se tiver alguma dúvida, entre em contato!"
-    }
-  },
-  "roles": {
-    "user": {
-      "name": "Usuário",
-      "description": "Usuário Autenticado"
-    },
-    "admin": {
-      "name": "Administrador",
-      "description": "Superusuário"
+      "permissions_hint": "Só pode conceder permissões que já possui."
     }
   }
 }

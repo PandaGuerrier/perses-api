@@ -1,38 +1,35 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
-import Role from '#users/models/role'
+import { PERMISSIONS } from '#users/enums/permission'
 import { ROLES } from '#users/enums/role'
 import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { ensureBaseRoles, systemRole } from '#tests/helpers/rbac'
 
-test.group('WithRoles mixin', (group) => {
+test.group('withRoles mixin', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
   group.each.setup(() => ensureBaseRoles())
 
-  test('assignRole atualiza getRoleNames imediatamente (sem cache stale)', async ({ assert }) => {
+  test('assignRole refreshes getRoleNames right away', async ({ assert }) => {
     const user = await UserFactory.create()
-    const admin = await Role.findByOrFail('name', ROLES.ADMIN)
-
-    await user.assignRole(admin)
+    await user.assignRole(await systemRole(ROLES.ADMIN))
 
     assert.deepEqual(await user.getRoleNames(), [ROLES.ADMIN])
   })
 
-  test('syncRoles atualiza getRoleNames imediatamente', async ({ assert }) => {
+  test('syncRoles replaces the whole set', async ({ assert }) => {
     const user = await UserFactory.create()
-    await withRole(user, ROLES.ADMIN)
+    await user.assignRole(await systemRole(ROLES.ADMIN))
 
-    const userRole = await Role.findByOrFail('name', ROLES.USER)
-    await user.syncRoles([userRole])
+    await user.syncRoles([await systemRole(ROLES.STUDENT)])
 
-    assert.deepEqual(await user.getRoleNames(), [ROLES.USER])
+    assert.deepEqual(await user.getRoleNames(), [ROLES.STUDENT])
   })
 
-  test('revokeRole remove o papel e atualiza cache', async ({ assert }) => {
+  test('revokeRole drops the role and the cached permissions', async ({ assert }) => {
     const user = await UserFactory.create()
-    await withRole(user, ROLES.ADMIN)
-    const admin = await Role.findByOrFail('name', ROLES.ADMIN)
+    const admin = await systemRole(ROLES.ADMIN)
+    await user.assignRole(admin)
 
     await user.revokeRole(admin)
 
@@ -40,26 +37,21 @@ test.group('WithRoles mixin', (group) => {
     assert.isFalse(await user.hasRole(ROLES.ADMIN))
   })
 
-  test('revokeRoles remove multiplos e atualiza cache', async ({ assert }) => {
+  test('permissions merge across several roles', async ({ assert }) => {
     const user = await UserFactory.create()
-    const admin = await Role.findByOrFail('name', ROLES.ADMIN)
-    const userRole = await Role.findByOrFail('name', ROLES.USER)
-    await user.assignRoles([admin, userRole])
-    assert.lengthOf(await user.getRoleNames(), 2)
+    await user.assignRoles([await systemRole(ROLES.TEACHER), await systemRole(ROLES.STUDENT)])
 
-    await user.revokeRoles([admin, userRole])
-
-    assert.deepEqual(await user.getRoleNames(), [])
+    assert.isTrue(await user.hasPermission(PERMISSIONS.groupsCreate))
+    assert.isTrue(await user.hasPermission(PERMISSIONS.examsViewSchedule))
   })
 
-  test('hasPermission reflete estado atual apos syncRoles', async ({ assert }) => {
+  test('hasPermission reflects the state after syncRoles', async ({ assert }) => {
     const user = await UserFactory.create()
-    await withRole(user, ROLES.ADMIN)
-    assert.isTrue(await user.hasPermission('users.view_list'))
+    await user.assignRole(await systemRole(ROLES.ADMIN))
+    assert.isTrue(await user.hasPermission(PERMISSIONS.usersViewList))
 
-    const userRole = await Role.findByOrFail('name', ROLES.USER)
-    await user.syncRoles([userRole])
+    await user.syncRoles([await systemRole(ROLES.STUDENT)])
 
-    assert.isFalse(await user.hasPermission('users.view_list'))
+    assert.isFalse(await user.hasPermission(PERMISSIONS.usersViewList))
   })
 })

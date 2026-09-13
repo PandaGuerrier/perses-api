@@ -14,7 +14,7 @@ export default class UserTransformer extends BaseTransformer<User> {
   forSharedProps() {
     return {
       ...this.toObject(),
-      avatarUrl: this.avatarUrl(),
+      schoolId: this.resource.schoolUuid,
     }
   }
 
@@ -22,6 +22,7 @@ export default class UserTransformer extends BaseTransformer<User> {
     return {
       ...this.toObject(),
       roles: this.roleNames(),
+      schoolId: this.resource.schoolUuid,
       createdAt: this.resource.createdAt.toISO()!,
     }
   }
@@ -30,19 +31,15 @@ export default class UserTransformer extends BaseTransformer<User> {
     return {
       ...this.toObject(),
       roles: this.roleNames(),
+      schoolId: this.resource.schoolUuid,
     }
   }
 
   forProfile() {
     return {
       ...this.toObject(),
-      avatarUrl: this.avatarUrl(),
+      roles: this.roleNames(),
     }
-  }
-
-  private avatarUrl() {
-    const thumbnail = this.resource.avatar?.getVariant('thumbnail')?.url
-    return thumbnail ?? this.resource.avatarUrl
   }
 
   private roleNames() {

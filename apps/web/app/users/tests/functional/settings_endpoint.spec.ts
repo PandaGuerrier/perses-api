@@ -2,8 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 
 import { ROLES } from '#users/enums/role'
-import { UserFactory } from '#users/database/factories/user'
-import { ensureBaseRoles, withRole } from '#tests/helpers/rbac'
+import { createSchool, ensureBaseRoles, makeUser } from '#tests/helpers/rbac'
 
 test.group('Endpoint /settings', (group) => {
   group.each.setup(() => testUtils.db().wrapInGlobalTransaction())
@@ -12,12 +11,11 @@ test.group('Endpoint /settings', (group) => {
   test('sem auth redireciona para login', async ({ client, assert }) => {
     const response = await client.get('/settings').redirects(0)
     response.assertStatus(302)
-    assert.equal(response.header('location'), '/login')
+    assert.equal(response.header('location'), '/auth')
   })
 
   test('user comum acessa e nao ve tokens (sem permission)', async ({ client, assert }) => {
-    const user = await UserFactory.create()
-    await withRole(user, ROLES.USER)
+    const user = await makeUser(ROLES.STUDENT, await createSchool())
 
     const response = await client.get('/settings').loginAs(user).withInertia()
 
@@ -27,12 +25,11 @@ test.group('Endpoint /settings', (group) => {
   })
 
   test('admin acessa e ve o proprio profile', async ({ client, assert }) => {
-    const admin = await UserFactory.create()
-    await withRole(admin, ROLES.ADMIN)
+    const admin = await makeUser(ROLES.ADMIN, await createSchool())
 
     const response = await client.get('/settings').loginAs(admin).withInertia()
 
     response.assertStatus(200)
-    assert.equal(response.inertiaProps.profile.id, admin.id)
+    assert.equal(response.inertiaProps.profile.id, admin.uuid)
   })
 })

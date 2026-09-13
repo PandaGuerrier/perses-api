@@ -58,12 +58,20 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring ally package
   |----------------------------------------------------------
   */
-  GOOGLE_CLIENT_ID: Env.schema.string(),
-  GOOGLE_CLIENT_SECRET: Env.schema.string(),
   FERRISKEY_ISSUER: Env.schema.string(),
   FERRISKEY_CLIENT_ID: Env.schema.string(),
   FERRISKEY_CLIENT_SECRET: Env.schema.string(),
   FERRISKEY_CALLBACK_URL: Env.schema.string(),
+
+  /*
+  |----------------------------------------------------------
+  | Bootstrap
+  |----------------------------------------------------------
+  |
+  | Comma-separated emails promoted to super-admin by the seeder. This is the
+  | only path to that role — no screen grants it.
+  */
+  SUPER_ADMIN_EMAILS: Env.schema.string.optional(),
 
   /*
   |----------------------------------------------------------

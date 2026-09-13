@@ -13,8 +13,16 @@
 */
 
 export const policies = {
-  // User policies
+  // Identity
   UserPolicy: () => import('#users/policies/user_policy'),
-  ImpersonatePolicy: () => import('#users/policies/impersonate_policy'),
+  RolePolicy: () => import('#users/policies/role_policy'),
   TokenPolicy: () => import('#users/policies/token_policy'),
+
+  // Organisation
+  SchoolPolicy: () => import('#schools/policies/school_policy'),
+  GroupPolicy: () => import('#schools/policies/group_policy'),
+  MemberPolicy: () => import('#schools/policies/member_policy'),
+
+  // Exams
+  ExamPolicy: () => import('#exam/policies/exam_policy'),
 }

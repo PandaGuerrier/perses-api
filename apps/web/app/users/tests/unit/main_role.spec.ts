@@ -3,26 +3,28 @@ import { test } from '@japa/runner'
 import { ROLES, mainRole } from '#users/enums/role'
 
 test.group('mainRole', () => {
-  test('retorna null quando array vazio', ({ assert }) => {
+  test('returns null for an empty list', ({ assert }) => {
     assert.isNull(mainRole([]))
   })
 
-  test('retorna null quando nenhum role e conhecido', ({ assert }) => {
-    assert.isNull(mainRole(['superadmin', 'guest', 'foo']))
+  test('returns null when no role is a built-in one', ({ assert }) => {
+    // Custom roles an admin authored are unknown here, by design.
+    assert.isNull(mainRole(['examiner', 'guest']))
   })
 
-  test('retorna o unico role conhecido', ({ assert }) => {
-    assert.equal(mainRole([ROLES.USER]), ROLES.USER)
-    assert.equal(mainRole([ROLES.ADMIN]), ROLES.ADMIN)
+  test('returns the only known role', ({ assert }) => {
+    assert.equal(mainRole([ROLES.STUDENT]), ROLES.STUDENT)
+    assert.equal(mainRole([ROLES.TEACHER]), ROLES.TEACHER)
   })
 
-  test('admin ganha de user por peso', ({ assert }) => {
-    assert.equal(mainRole([ROLES.USER, ROLES.ADMIN]), ROLES.ADMIN)
-    assert.equal(mainRole([ROLES.ADMIN, ROLES.USER]), ROLES.ADMIN)
+  test('picks the heaviest role', ({ assert }) => {
+    assert.equal(mainRole([ROLES.STUDENT, ROLES.TEACHER]), ROLES.TEACHER)
+    assert.equal(mainRole([ROLES.TEACHER, ROLES.ADMIN]), ROLES.ADMIN)
+    assert.equal(mainRole([ROLES.ADMIN, ROLES.SUPER_ADMIN]), ROLES.SUPER_ADMIN)
   })
 
-  test('ignora roles desconhecidos e escolhe entre os conhecidos', ({ assert }) => {
-    assert.equal(mainRole(['guest', ROLES.USER, 'superadmin']), ROLES.USER)
-    assert.equal(mainRole(['guest', ROLES.USER, ROLES.ADMIN, 'x']), ROLES.ADMIN)
+  test('ignores unknown roles and chooses among the known ones', ({ assert }) => {
+    assert.equal(mainRole(['examiner', ROLES.TEACHER, 'guest']), ROLES.TEACHER)
+    assert.equal(mainRole(['examiner', ROLES.STUDENT, ROLES.ADMIN]), ROLES.ADMIN)
   })
 })

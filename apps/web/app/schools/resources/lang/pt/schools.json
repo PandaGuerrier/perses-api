@@ -1,0 +1,79 @@
+{
+  "index": {
+    "page": {
+      "title": "Escolas",
+      "description": "Todas as organizações da plataforma.",
+      "breadcrumbs": {
+        "schools": "Escolas"
+      }
+    },
+    "table": {
+      "name": "Nome",
+      "members": "Membros",
+      "groups": "Turmas",
+      "created_at": "Criada em"
+    }
+  },
+  "groups": {
+    "page": {
+      "title": "Turmas",
+      "description": "As turmas da sua escola.",
+      "breadcrumbs": {
+        "groups": "Turmas"
+      }
+    },
+    "table": {
+      "name": "Nome",
+      "school": "Escola",
+      "students": "Alunos",
+      "created_at": "Criada em"
+    },
+    "detail": {
+      "students": "Alunos da turma",
+      "candidates": "Adicionar um aluno",
+      "empty": "Ainda não há alunos nesta turma.",
+      "save": "Guardar a turma"
+    }
+  },
+  "members": {
+    "page": {
+      "title": "Membros",
+      "description": "Pessoas associadas a esta escola.",
+      "breadcrumbs": {
+        "members": "Membros"
+      }
+    },
+    "table": {
+      "name": "Nome",
+      "email": "E-mail",
+      "roles": "Funções",
+      "created_at": "Entrou em"
+    },
+    "invitations": {
+      "title": "Convites pendentes",
+      "description": "Serão associados no primeiro início de sessão.",
+      "empty": "Sem convites pendentes.",
+      "revoke": "Revogar"
+    },
+    "invite": {
+      "title": "Convidar por e-mail",
+      "email": "Endereço de e-mail",
+      "role": "Função",
+      "submit": "Enviar convite",
+      "no_role": "Sem função"
+    }
+  },
+  "action": {
+    "create": "Nova escola",
+    "edit": "Editar escola",
+    "delete": "Eliminar escola",
+    "create_group": "Nova turma",
+    "edit_group": "Editar turma",
+    "delete_group": "Eliminar turma",
+    "name": "Nome",
+    "description": "Descrição",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "remove_member": "Remover da escola"
+  }
+}

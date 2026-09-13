@@ -1,0 +1,79 @@
+{
+  "index": {
+    "page": {
+      "title": "Schools",
+      "description": "Every organisation on the platform.",
+      "breadcrumbs": {
+        "schools": "Schools"
+      }
+    },
+    "table": {
+      "name": "Name",
+      "members": "Members",
+      "groups": "Groups",
+      "created_at": "Created"
+    }
+  },
+  "groups": {
+    "page": {
+      "title": "Groups",
+      "description": "Classes inside your school.",
+      "breadcrumbs": {
+        "groups": "Groups"
+      }
+    },
+    "table": {
+      "name": "Name",
+      "school": "School",
+      "students": "Students",
+      "created_at": "Created"
+    },
+    "detail": {
+      "students": "Students in this group",
+      "candidates": "Add a student",
+      "empty": "No student in this group yet.",
+      "save": "Save the class list"
+    }
+  },
+  "members": {
+    "page": {
+      "title": "Members",
+      "description": "People attached to this school.",
+      "breadcrumbs": {
+        "members": "Members"
+      }
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "roles": "Roles",
+      "created_at": "Joined"
+    },
+    "invitations": {
+      "title": "Pending invitations",
+      "description": "They will be attached to the school on their first sign-in.",
+      "empty": "No pending invitation.",
+      "revoke": "Revoke"
+    },
+    "invite": {
+      "title": "Invite by email",
+      "email": "Email address",
+      "role": "Role",
+      "submit": "Send invitation",
+      "no_role": "No role"
+    }
+  },
+  "action": {
+    "create": "New school",
+    "edit": "Edit school",
+    "delete": "Delete school",
+    "create_group": "New group",
+    "edit_group": "Edit group",
+    "delete_group": "Delete group",
+    "name": "Name",
+    "description": "Description",
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove_member": "Remove from school"
+  }
+}
