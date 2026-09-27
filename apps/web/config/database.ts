@@ -28,6 +28,7 @@ const dbConfig = defineConfig({
           'app/users/database/migrations',
           'app/schools/database/migrations',
           'app/exam/database/migrations',
+          'app/vpn/database/migrations',
         ],
       },
       seeders: {

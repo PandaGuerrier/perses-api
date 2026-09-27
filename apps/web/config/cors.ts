@@ -8,7 +8,8 @@ import { defineConfig } from '@adonisjs/cors'
  */
 const corsConfig = defineConfig({
   enabled: true,
-  origin: [],
+  // Tauri webview origins: Vite dev server, macOS/Linux bundle, Windows bundle.
+  origin: ['http://localhost:1420', 'tauri://localhost', 'http://tauri.localhost'],
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
   headers: true,
   exposeHeaders: [],

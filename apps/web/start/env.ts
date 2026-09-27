@@ -86,5 +86,20 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
   LIMITER_STORE: Env.schema.enum(['database', 'memory'] as const),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the WireGuard server
+  |----------------------------------------------------------
+  |
+  | The interface lives on the API host. The subnet's first host is the
+  | server's own address; AllowedIPs is what clients route through it.
+  */
+  WG_INTERFACE: Env.schema.string(),
+  WG_SERVER_PUBLIC_KEY: Env.schema.string(),
+  WG_ENDPOINT: Env.schema.string(),
+  WG_SUBNET: Env.schema.string(),
+  WG_ALLOWED_IPS: Env.schema.string(),
+  WG_DNS: Env.schema.string.optional(),
   SOCKET_PATH: Env.schema.string(),
 })

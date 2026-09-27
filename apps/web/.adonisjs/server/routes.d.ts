@@ -6,6 +6,7 @@ export type ScannedRoutes = {
   ALL: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'public.index': { paramsTuple?: []; params?: {} }
+    'vpn.index': { paramsTuple?: []; params?: {} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
@@ -26,6 +27,10 @@ export type ScannedRoutes = {
     'auth.ferriskey.redirect': { paramsTuple?: []; params?: {} }
     'auth.ferriskey.callback': { paramsTuple?: []; params?: {} }
     'auth.logout': { paramsTuple?: []; params?: {} }
+    'auth.desktop.redirect': { paramsTuple?: []; params?: {} }
+    'api.desktop.token': { paramsTuple?: []; params?: {} }
+    'api.desktop.me': { paramsTuple?: []; params?: {} }
+    'api.desktop.logout': { paramsTuple?: []; params?: {} }
     'exams.index': { paramsTuple?: []; params?: {} }
     'exams.create': { paramsTuple?: []; params?: {} }
     'exams.store': { paramsTuple?: []; params?: {} }
@@ -60,6 +65,7 @@ export type ScannedRoutes = {
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'public.index': { paramsTuple?: []; params?: {} }
+    'vpn.index': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -70,6 +76,8 @@ export type ScannedRoutes = {
     'auth.index': { paramsTuple?: []; params?: {} }
     'auth.ferriskey.redirect': { paramsTuple?: []; params?: {} }
     'auth.ferriskey.callback': { paramsTuple?: []; params?: {} }
+    'auth.desktop.redirect': { paramsTuple?: []; params?: {} }
+    'api.desktop.me': { paramsTuple?: []; params?: {} }
     'exams.index': { paramsTuple?: []; params?: {} }
     'exams.create': { paramsTuple?: []; params?: {} }
     'exams.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -89,6 +97,7 @@ export type ScannedRoutes = {
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'public.index': { paramsTuple?: []; params?: {} }
+    'vpn.index': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -99,6 +108,8 @@ export type ScannedRoutes = {
     'auth.index': { paramsTuple?: []; params?: {} }
     'auth.ferriskey.redirect': { paramsTuple?: []; params?: {} }
     'auth.ferriskey.callback': { paramsTuple?: []; params?: {} }
+    'auth.desktop.redirect': { paramsTuple?: []; params?: {} }
+    'api.desktop.me': { paramsTuple?: []; params?: {} }
     'exams.index': { paramsTuple?: []; params?: {} }
     'exams.create': { paramsTuple?: []; params?: {} }
     'exams.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -121,6 +132,7 @@ export type ScannedRoutes = {
     'roles.store': { paramsTuple?: []; params?: {} }
     'tokens.store': { paramsTuple?: []; params?: {} }
     'auth.logout': { paramsTuple?: []; params?: {} }
+    'api.desktop.token': { paramsTuple?: []; params?: {} }
     'exams.store': { paramsTuple?: []; params?: {} }
     'schools.store': { paramsTuple?: []; params?: {} }
     'groups.store': { paramsTuple?: []; params?: {} }
@@ -147,6 +159,7 @@ export type ScannedRoutes = {
     'users.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'roles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'tokens.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'api.desktop.logout': { paramsTuple?: []; params?: {} }
     'exams.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'schools.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'groups.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

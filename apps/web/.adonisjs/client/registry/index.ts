@@ -18,6 +18,12 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['public.index']['types'],
   },
+  'vpn.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/vpn',
+    tokens: [{"old":"/vpn","type":0,"val":"vpn","end":""}],
+    types: placeholder as Registry['vpn.index']['types'],
+  },
   'locale.switch': {
     methods: ["POST"],
     pattern: '/switch/:locale',
@@ -137,6 +143,30 @@ const routes = {
     pattern: '/logout',
     tokens: [{"old":"/logout","type":0,"val":"logout","end":""}],
     types: placeholder as Registry['auth.logout']['types'],
+  },
+  'auth.desktop.redirect': {
+    methods: ["GET","HEAD"],
+    pattern: '/auth/desktop/redirect',
+    tokens: [{"old":"/auth/desktop/redirect","type":0,"val":"auth","end":""},{"old":"/auth/desktop/redirect","type":0,"val":"desktop","end":""},{"old":"/auth/desktop/redirect","type":0,"val":"redirect","end":""}],
+    types: placeholder as Registry['auth.desktop.redirect']['types'],
+  },
+  'api.desktop.token': {
+    methods: ["POST"],
+    pattern: '/api/auth/desktop/token',
+    tokens: [{"old":"/api/auth/desktop/token","type":0,"val":"api","end":""},{"old":"/api/auth/desktop/token","type":0,"val":"auth","end":""},{"old":"/api/auth/desktop/token","type":0,"val":"desktop","end":""},{"old":"/api/auth/desktop/token","type":0,"val":"token","end":""}],
+    types: placeholder as Registry['api.desktop.token']['types'],
+  },
+  'api.desktop.me': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/me',
+    tokens: [{"old":"/api/me","type":0,"val":"api","end":""},{"old":"/api/me","type":0,"val":"me","end":""}],
+    types: placeholder as Registry['api.desktop.me']['types'],
+  },
+  'api.desktop.logout': {
+    methods: ["DELETE"],
+    pattern: '/api/auth/token',
+    tokens: [{"old":"/api/auth/token","type":0,"val":"api","end":""},{"old":"/api/auth/token","type":0,"val":"auth","end":""},{"old":"/api/auth/token","type":0,"val":"token","end":""}],
+    types: placeholder as Registry['api.desktop.logout']['types'],
   },
   'exams.index': {
     methods: ["GET","HEAD"],

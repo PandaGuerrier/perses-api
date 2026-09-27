@@ -6,6 +6,7 @@
 export const controllers = {
   auth: {
     Auth: () => import('#app/auth/controllers/auth_controller'),
+    DesktopAuth: () => import('#app/auth/controllers/desktop_auth_controller'),
   },
   dashboard: {
     Dashboard: () => import('#app/dashboard/controllers/dashboard_controller'),
@@ -30,5 +31,8 @@ export const controllers = {
     Settings: () => import('#app/users/controllers/settings_controller'),
     Tokens: () => import('#app/users/controllers/tokens_controller'),
     Users: () => import('#app/users/controllers/users_controller'),
+  },
+  vpn: {
+    VpnPeers: () => import('#app/vpn/controllers/vpn_peers_controller'),
   },
 }

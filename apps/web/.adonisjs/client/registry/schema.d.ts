@@ -31,6 +31,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/public/controllers/public_controller').default['index']>>>
     }
   }
+  'vpn.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/vpn'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/vpn/controllers/vpn_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/vpn/controllers/vpn_controller').default['index']>>>
+    }
+  }
   'locale.switch': {
     methods: ["POST"]
     pattern: '/switch/:locale'
@@ -269,6 +281,54 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/auth_controller').default['logout']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/auth_controller').default['logout']>>>
+    }
+  }
+  'auth.desktop.redirect': {
+    methods: ["GET","HEAD"]
+    pattern: '/auth/desktop/redirect'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: ExtractQueryForGet<InferInput<(typeof import('#auth/validators/desktop').desktopRedirectValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['redirect']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['redirect']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'api.desktop.token': {
+    methods: ["POST"]
+    pattern: '/api/auth/desktop/token'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#auth/validators/desktop').desktopTokenValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#auth/validators/desktop').desktopTokenValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['token']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['token']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'api.desktop.me': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/me'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['me']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['me']>>>
+    }
+  }
+  'api.desktop.logout': {
+    methods: ["DELETE"]
+    pattern: '/api/auth/token'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['logout']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/auth/controllers/desktop_auth_controller').default['logout']>>>
     }
   }
   'exams.index': {

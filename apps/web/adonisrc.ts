@@ -108,6 +108,9 @@ export default defineConfig({
 
     //dashboard
     () => import('#dashboard/routes'),
+
+    //vpn
+    () => import('#vpn/routes'),
   ],
 
   /*

@@ -227,3 +227,20 @@ export class UserSchema extends BaseModel {
   @column({ isPrimary: true })
   declare uuid: string
 }
+
+export class VpnPeerSchema extends BaseModel {
+  static $columns = ['address', 'createdAt', 'publicKey', 'updatedAt', 'userUuid', 'uuid'] as const
+  $columns = VpnPeerSchema.$columns
+  @column()
+  declare address: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare publicKey: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userUuid: string
+  @column({ isPrimary: true })
+  declare uuid: string
+}
