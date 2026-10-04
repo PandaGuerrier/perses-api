@@ -114,3 +114,22 @@ button {
     background-color: #0f0f0f69;
   }
 }
+
+.vpn-keys {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5em 1em;
+  margin: 1em auto;
+  text-align: left;
+}
+
+.vpn-keys dd {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0;
+}
+
+.vpn-keys code {
+  word-break: break-all;
+}

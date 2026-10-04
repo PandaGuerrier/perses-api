@@ -18,12 +18,6 @@ const routes = {
     tokens: [{"old":"/","type":0,"val":"/","end":""}],
     types: placeholder as Registry['public.index']['types'],
   },
-  'vpn.index': {
-    methods: ["GET","HEAD"],
-    pattern: '/vpn',
-    tokens: [{"old":"/vpn","type":0,"val":"vpn","end":""}],
-    types: placeholder as Registry['vpn.index']['types'],
-  },
   'locale.switch': {
     methods: ["POST"],
     pattern: '/switch/:locale',
@@ -323,6 +317,12 @@ const routes = {
     pattern: '/dashboard',
     tokens: [{"old":"/dashboard","type":0,"val":"dashboard","end":""}],
     types: placeholder as Registry['dashboard.show']['types'],
+  },
+  'api.vpn.peer.store': {
+    methods: ["POST"],
+    pattern: '/api/vpn/peer',
+    tokens: [{"old":"/api/vpn/peer","type":0,"val":"api","end":""},{"old":"/api/vpn/peer","type":0,"val":"vpn","end":""},{"old":"/api/vpn/peer","type":0,"val":"peer","end":""}],
+    types: placeholder as Registry['api.vpn.peer.store']['types'],
   },
   'internal.index': {
     methods: ["GET","HEAD"],

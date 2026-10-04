@@ -6,7 +6,6 @@ export type ScannedRoutes = {
   ALL: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'public.index': { paramsTuple?: []; params?: {} }
-    'vpn.index': { paramsTuple?: []; params?: {} }
     'locale.switch': { paramsTuple: [ParamValue]; params: {'locale': ParamValue} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
@@ -57,6 +56,7 @@ export type ScannedRoutes = {
     'schools.members.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'school_id': ParamValue,'id': ParamValue} }
     'schools.invitations.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'school_id': ParamValue,'id': ParamValue} }
     'dashboard.show': { paramsTuple?: []; params?: {} }
+    'api.vpn.peer.store': { paramsTuple?: []; params?: {} }
     'internal.index': { paramsTuple?: []; params?: {} }
     'event_stream': { paramsTuple?: []; params?: {} }
     'subscribe': { paramsTuple?: []; params?: {} }
@@ -65,7 +65,6 @@ export type ScannedRoutes = {
   GET: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'public.index': { paramsTuple?: []; params?: {} }
-    'vpn.index': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -97,7 +96,6 @@ export type ScannedRoutes = {
   HEAD: {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'public.index': { paramsTuple?: []; params?: {} }
-    'vpn.index': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'users.create': { paramsTuple?: []; params?: {} }
     'users.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -137,6 +135,7 @@ export type ScannedRoutes = {
     'schools.store': { paramsTuple?: []; params?: {} }
     'groups.store': { paramsTuple?: []; params?: {} }
     'schools.members.store': { paramsTuple: [ParamValue]; params: {'school_id': ParamValue} }
+    'api.vpn.peer.store': { paramsTuple?: []; params?: {} }
     'subscribe': { paramsTuple?: []; params?: {} }
     'unsubscribe': { paramsTuple?: []; params?: {} }
   }

@@ -1,20 +1,20 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
-use std::sync::Mutex;
 
 use base64::{engine::general_purpose::STANDARD, Engine};
 use rand_core::OsRng;
-use serde::Deserialize;
-use tauri::{AppHandle, Manager, State};
+use serde::{Deserialize, Serialize};
+use tauri::{AppHandle, Manager};
 use x25519_dalek::{PublicKey, StaticSecret};
 
 const TUNNEL_NAME: &str = "perses";
 
-/// Private key generated for the in-flight provisioning: it waits here while
-/// the public half goes to the API, and only ever leaves the process inside
-/// the config file.
-#[derive(Default)]
-pub struct PendingKey(Mutex<Option<StaticSecret>>);
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct VpnKeys {
+    public_key: String,
+    private_key: String,
+}
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -107,30 +107,60 @@ pub async fn install_wireguard() -> Result<(), String> {
         .ok_or_else(|| "WireGuard n'a pas été trouvé après l'installation.".to_string())
 }
 
-/// Generates a fresh key pair and returns the public key to register with the API.
-#[tauri::command]
-pub fn vpn_public_key(pending: State<PendingKey>) -> String {
-    let secret = StaticSecret::random_from_rng(OsRng);
-    let public = PublicKey::from(&secret);
-    *pending.0.lock().unwrap() = Some(secret);
-
-    STANDARD.encode(public.as_bytes())
+fn config_dir(app: &AppHandle) -> Result<PathBuf, String> {
+    let dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
+    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
+    Ok(dir)
 }
 
-/// Writes `<app config dir>/perses.conf` from the API answer and the pending
+fn write_private(path: &Path, content: &str) -> Result<(), String> {
+    std::fs::write(path, content).map_err(|e| e.to_string())?;
+
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o600))
+            .map_err(|e| e.to_string())?;
+    }
+
+    Ok(())
+}
+
+/// The key pair outlives logins: the server keys the peer on the public half,
+/// so regenerating it would drop the previous tunnel for nothing.
+fn load_or_create_secret(app: &AppHandle) -> Result<StaticSecret, String> {
+    let path = config_dir(app)?.join(format!("{TUNNEL_NAME}.key"));
+
+    if let Ok(stored) = std::fs::read_to_string(&path) {
+        let bytes: [u8; 32] = STANDARD
+            .decode(stored.trim())
+            .ok()
+            .and_then(|b| b.try_into().ok())
+            .ok_or("Clé privée VPN illisible.")?;
+        return Ok(StaticSecret::from(bytes));
+    }
+
+    let secret = StaticSecret::random_from_rng(OsRng);
+    write_private(&path, &STANDARD.encode(secret.to_bytes()))?;
+    Ok(secret)
+}
+
+/// Returns the device key pair, generating and storing it on first use.
+#[tauri::command]
+pub fn vpn_keys(app: AppHandle) -> Result<VpnKeys, String> {
+    let secret = load_or_create_secret(&app)?;
+
+    Ok(VpnKeys {
+        public_key: STANDARD.encode(PublicKey::from(&secret).as_bytes()),
+        private_key: STANDARD.encode(secret.to_bytes()),
+    })
+}
+
+/// Writes `<app config dir>/perses.conf` from the API answer and the stored
 /// private key, and returns its path.
 #[tauri::command]
-pub fn write_vpn_config(
-    app: AppHandle,
-    pending: State<PendingKey>,
-    config: VpnConfig,
-) -> Result<String, String> {
-    let secret = pending
-        .0
-        .lock()
-        .unwrap()
-        .take()
-        .ok_or("Aucune clé en attente : appelez vpn_public_key d'abord.")?;
+pub fn write_vpn_config(app: AppHandle, config: VpnConfig) -> Result<String, String> {
+    let secret = load_or_create_secret(&app)?;
 
     let dns = config
         .dns
@@ -146,17 +176,8 @@ pub fn write_vpn_config(
         config.server.persistent_keepalive,
     );
 
-    let dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
-    std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
-    let path = dir.join(format!("{TUNNEL_NAME}.conf"));
-    std::fs::write(&path, content).map_err(|e| e.to_string())?;
-
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o600))
-            .map_err(|e| e.to_string())?;
-    }
+    let path = config_dir(&app)?.join(format!("{TUNNEL_NAME}.conf"));
+    write_private(&path, &content)?;
 
     Ok(path.to_string_lossy().into_owned())
 }

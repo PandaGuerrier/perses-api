@@ -31,18 +31,6 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/public/controllers/public_controller').default['index']>>>
     }
   }
-  'vpn.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/vpn'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#app/vpn/controllers/vpn_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/vpn/controllers/vpn_controller').default['index']>>>
-    }
-  }
   'locale.switch': {
     methods: ["POST"]
     pattern: '/switch/:locale'
@@ -641,6 +629,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#app/dashboard/controllers/dashboard_controller').default['show']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/dashboard/controllers/dashboard_controller').default['show']>>>
+    }
+  }
+  'api.vpn.peer.store': {
+    methods: ["POST"]
+    pattern: '/api/vpn/peer'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#vpn/validators/peers').createPeerValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#vpn/validators/peers').createPeerValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/vpn/controllers/vpn_peers_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/vpn/controllers/vpn_peers_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'internal.index': {

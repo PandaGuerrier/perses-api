@@ -5,12 +5,11 @@ mod vpn;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .manage(vpn::PendingKey::default())
         .invoke_handler(tauri::generate_handler![
             auth::start_auth_listener,
             vpn::wireguard_installed,
             vpn::install_wireguard,
-            vpn::vpn_public_key,
+            vpn::vpn_keys,
             vpn::write_vpn_config
         ])
         .run(tauri::generate_context!())

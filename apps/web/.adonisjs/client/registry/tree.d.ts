@@ -10,9 +10,6 @@ export interface ApiDefinition {
   public: {
     index: typeof routes['public.index']
   }
-  vpn: {
-    index: typeof routes['vpn.index']
-  }
   locale: {
     switch: typeof routes['locale.switch']
   }
@@ -55,6 +52,11 @@ export interface ApiDefinition {
       token: typeof routes['api.desktop.token']
       me: typeof routes['api.desktop.me']
       logout: typeof routes['api.desktop.logout']
+    }
+    vpn: {
+      peer: {
+        store: typeof routes['api.vpn.peer.store']
+      }
     }
   }
   exams: {
